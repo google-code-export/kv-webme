@@ -7,6 +7,7 @@
 $dbhost='localhost';
 $dbuser='root';
 $dbpass='';
+$dbname='kvwebmetest'; // create this if it doesn't exist!
 
 /**
 	* address of the webserver set up for running the test WebME instance in

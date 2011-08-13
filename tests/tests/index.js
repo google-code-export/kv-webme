@@ -10,11 +10,25 @@ $(function(){
 		addRow('Copy Site', 2);
 		$.post('p/copy-site.php', function(ret) {
 			timerStop(ret);
-			testCodeFormatting();
+			testInstaller();
+		}, 'json');
+	}
+	function testInstaller() {
+		addRow('Installer', 4);
+		$.post('p/test-installer.php', function(ret) {
+			timerStop(ret);
+			ret.ok && testAdminLogin();
+		}, 'json');
+	}
+	function testAdminLogin() {
+		addRow('Admin Login', 1);
+		$.post('p/test-admin-login.php', function(ret) {
+			timerStop(ret);
+			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
 	function testCodeFormatting() {
-		addRow('Check Code Formatting', 184);
+		addRow('Check Code Formatting', 300);
 		$.post('p/check-code-formatting.php', function(ret) {
 			timerStop(ret);
 		}, 'json');
@@ -60,6 +74,9 @@ $(function(){
 		}
 		if (ret.notes) {
 			$('#current .notes').text(ret.notes);
+		}
+		else if (ret.ok) {
+			$('#current .notes').text('ok');
 		}
 		if (ret.errors) {
 			$('#current')
