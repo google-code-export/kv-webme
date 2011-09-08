@@ -10,8 +10,8 @@ if (strpos($file, 'Forgotten Password')===false) {
 // }
 // { try login with no parameters
 $file=Curl_get('http://kvwebmerun/a/f=login', array());
-if ($file!='{"error":"either the email address or the password are incorrect"}') {
-	die('{"errors":"login with no parameters returned incorrect response"}');
+if ($file!='{"error":"missing email address or password"}') {
+	die('{"errors":"missing email address or password"}');
 }
 // }
 // { try login with correct parameters
@@ -25,7 +25,7 @@ if ($file!='{"ok":1}') {
 // }
 // { try load up admin page again
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
-if (strpos($file, 'page generated in')===false) {
+if (strpos($file, '<!-- end of WebME admin -->')===false) {
 	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
 }
 // }
