@@ -40,7 +40,7 @@ class WebME_Sniffs_Files_LineEndingsSniff extends Generic_Sniffs_Files_LineEndin
      *
      * @var string
      */
-    protected $eolChar = "\n";
+    public $eolChar = "\n";
 
 }//end class
 

@@ -24,6 +24,13 @@ $(function(){
 		addRow('Admin Login', 1);
 		$.post('p/test-admin-login.php', function(ret) {
 			timerStop(ret);
+			ret.ok && testPageCreation();
+		}, 'json');
+	}
+	function testPageCreation() {
+		addRow('Page Creation', 1);
+		$.post('p/test-page-creation.php', function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
@@ -82,7 +89,7 @@ $(function(){
 			$('#current')
 				.addClass('has-errors')
 				.find('.errors')
-				.text(ret.errors);
+				.html(ret.errors);
 		}
 	}
 	$('<button>Start the tests</button>')

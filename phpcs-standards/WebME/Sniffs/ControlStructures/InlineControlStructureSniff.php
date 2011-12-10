@@ -35,14 +35,5 @@ if (class_exists('Generic_Sniffs_ControlStructures_InlineControlStructureSniff',
  */
 class WebME_Sniffs_ControlStructures_InlineControlStructureSniff extends Generic_Sniffs_ControlStructures_InlineControlStructureSniff
 {
-
-    /**
-     * If true, an error will be thrown; otherwise a warning.
-     *
-     * @var bool
-     */
-    protected $error = false;
-
-}//end class
-
-?>
+    public $error = false;
+}

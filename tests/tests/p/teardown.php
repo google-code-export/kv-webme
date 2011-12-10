@@ -14,5 +14,5 @@ function rrmdir($dir) {
 }
 rrmdir($run_dir.'/trunk');
 rrmdir($run_dir.'/files');
-`echo "drop table groups; drop table user_accounts; drop table users_groups;" | mysql -uroot kvwebmetest`;
+`echo "drop database kvwebmetest; create database kvwebmetest;" | mysql -uroot`;
 echo '{"ok":1,"notes":"actual time may vary"}';
