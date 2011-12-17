@@ -31,6 +31,13 @@ $(function(){
 		addRow('Page Creation', 1);
 		$.post('p/test-page-creation.php', function(ret) {
 			timerStop(ret);
+			ret.ok && testPageEditing();
+		}, 'json');
+	}
+	function testPageEditing() {
+		addRow('Page Editing', 1);
+		$.post('p/test-page-editing.php', function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
