@@ -24,6 +24,13 @@ $(function(){
 		addRow('Admin Login', 1);
 		$.post('p/test-admin-login.php', function(ret) {
 			timerStop(ret);
+			ret.ok && testPluginInstallDeinstall();
+		}, 'json');
+	}
+	function testPluginInstallDeinstall() {
+		addRow('Plugin Installation and Deinstallation', 1);
+		$.post('p/test-plugin-install-deinstall.php', function(ret) {
+			timerStop(ret);
 			ret.ok && testPageCreation();
 		}, 'json');
 	}
