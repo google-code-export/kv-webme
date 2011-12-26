@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>WebME</title>
+	  <script type="text/javascript" src="j/phonegap-1.3.0.js"></script>
+	  <script type="text/javascript" src="j/jquery-1.7.1.min.js"></script>
+	  <script type="text/javascript" src="j/jquery-ui-1.8.16.custom.min.js"></script>
+	  <script type="text/javascript" src="j/default.js"></script>     
+	  <link rel="stylesheet" href="c/all.css"/>
+	  <link rel="stylesheet" href="c/jquery-ui-1.8.16.custom.css"/>
+	  <link rel="stylesheet" href="c/vertical.css" media="only screen and (max-width:480px)"/>
+	  <link rel="stylesheet" href="c/horizontal.css" media="screen and (min-width:481px)"/>
+	  <meta name="viewport" content="user-scalable=no, width=device-width"/>
+  </head>
+  <body onload="onLoad();">
+  	<div id="header"></div>
+	<div id="content">
+		<h1>WebME Login</h1>
+		<p>Please use the form below to login to your WebME website.</p>
+		<table class="form">
+			<tr>
+				<th>Domain Name</th>
+				<td><input type="text" placeholder="www.servername.com"/></td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td><input type="email" placeholder="Email"/></td>
+			</tr>
+			<tr>
+				<th>Password</th>
+				<td><input type="password" placeholder="Password"/></td>
+			</tr>
+			<tr><td colspan="2"><input type="checkbox"/>Remember Details?</td></tr>
+			<tr><td colspan="2"><button>Login</button></td></tr>
+		</table>
+	</div>
+  	<div id="footer"><div/>
+  </body>
+</html>
