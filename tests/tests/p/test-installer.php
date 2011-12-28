@@ -152,7 +152,6 @@ if (!$file || strpos($file, 'This is your new website')===false) {
 @mkdir($userbase.'/xdebug');
 file_put_contents(
 	'../../run/.htaccess',
-	'php_flag xdebug.profiler_enable On',
-	FILE_APPEND
+	'php_flag xdebug.profiler_enable On'
 );
 echo '{"ok":1}';

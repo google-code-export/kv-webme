@@ -5,6 +5,7 @@ function Curl_get($url, $post=array(), $output=false) {
 	curl_setopt($ch, CURLOPT_COOKIEFILE, '../../run/files/curl_cookies.txt');
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	$ret=curl_exec($ch);
 	if ($output) {

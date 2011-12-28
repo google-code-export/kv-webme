@@ -45,6 +45,13 @@ $(function(){
 		addRow('Page Editing', 1);
 		$.post('p/test-page-editing.php', function(ret) {
 			timerStop(ret);
+			ret.ok && testPageRedirect();
+		}, 'json');
+	}
+	function testPageRedirect() {
+		addRow('Page-type: Redirect', 1);
+		$.post('p/test-page-redirect.php', function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
