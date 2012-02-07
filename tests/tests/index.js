@@ -52,6 +52,13 @@ $(function(){
 		addRow('Page-type: Redirect', 1);
 		$.post('p/test-page-redirect.php', function(ret) {
 			timerStop(ret);
+			ret.ok && testPageNonLatin();
+		}, 'json');
+	}
+	function testPageNonLatin() {
+		addRow('Non-latin page names', 1);
+		$.post('p/test-page-non-latin.php', function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
