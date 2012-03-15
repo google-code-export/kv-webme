@@ -1,70 +1,70 @@
 $(function(){
 	function teardown() {
 		addRow('Teardown previous tests', 3.5);
-		$.post('/p/teardown.php', function(ret) {
+		$.post('/p/teardown.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			testCopySite();
 		}, 'json');
 	}
 	function testCopySite() {
 		addRow('Copy Site', 2);
-		$.post('p/copy-site.php', function(ret) {
+		$.post('p/copy-site.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			testInstaller();
 		}, 'json');
 	}
 	function testInstaller() {
 		addRow('Installer', 4);
-		$.post('p/test-installer.php', function(ret) {
+		$.post('p/test-installer.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testAdminLogin();
 		}, 'json');
 	}
 	function testAdminLogin() {
 		addRow('Admin Login', 1);
-		$.post('p/test-admin-login.php', function(ret) {
+		$.post('p/test-admin-login.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPluginInstallDeinstall();
 		}, 'json');
 	}
 	function testPluginInstallDeinstall() {
 		addRow('Plugin Installation and Deinstallation', 1);
-		$.post('p/test-plugin-install-deinstall.php', function(ret) {
+		$.post('p/test-plugin-install-deinstall.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageCreation();
 		}, 'json');
 	}
 	function testPageCreation() {
 		addRow('Page Creation', 1);
-		$.post('p/test-page-creation.php', function(ret) {
+		$.post('p/test-page-creation.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageEditing();
 		}, 'json');
 	}
 	function testPageEditing() {
 		addRow('Page Editing', 1);
-		$.post('p/test-page-editing.php', function(ret) {
+		$.post('p/test-page-editing.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageRedirect();
 		}, 'json');
 	}
 	function testPageRedirect() {
 		addRow('Page-type: Redirect', 1);
-		$.post('p/test-page-redirect.php', function(ret) {
+		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageNonLatin();
 		}, 'json');
 	}
 	function testPageNonLatin() {
 		addRow('Non-latin page names', 1);
-		$.post('p/test-page-non-latin.php', function(ret) {
+		$.post('p/test-page-non-latin.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
 	function testCodeFormatting() {
 		addRow('Check Code Formatting', 300);
-		$.post('p/check-code-formatting.php', function(ret) {
+		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 		}, 'json');
 	}

@@ -14,7 +14,7 @@ if (strpos($file, '<!-- end of WebME admin -->')===false) {
 // }
 // { get current list of root pages
 $file=Curl_get('http://kvwebmerun/a/f=getMenu', array());
-$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop ajaxmenu_hasChildren","link":"\/redirect","parent":null}]]';
+$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first c1","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop c2 ajaxmenu_hasChildren","link":"\/redirect","parent":null}]]';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'failed to get current list of root pages.<br/>expected:<br/>'
@@ -38,7 +38,7 @@ if ($file!=$expected) {
 // }
 // { check new list of root pages
 $file=Curl_get('http://kvwebmerun/a/f=getMenu', array());
-$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop ajaxmenu_hasChildren","link":"\/redirect","parent":null},{"subid":"6","id":"6","name":"\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00e6\u00f8\u00e5","alias":"aeiouaeiouaoa","type":"0","numchildren":"0","classes":"menuItemTop","link":"\/aeiouaeiouaoa","parent":null}]]';
+$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first c1","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop c2 ajaxmenu_hasChildren","link":"\/redirect","parent":null},{"subid":"6","id":"6","name":"\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00e6\u00f8\u00e5","alias":"aeiouaeiouaoa","type":"0","numchildren":"0","classes":"menuItemTop c3","link":"\/aeiouaeiouaoa","parent":null}]]';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'incorrect URL for transcribed page.<br/>expected:<br/>'
@@ -63,7 +63,7 @@ if ($file!=$expected) {
 // }
 // { check new list of root pages
 $file=Curl_get('http://kvwebmerun/a/f=getMenu', array());
-$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop ajaxmenu_hasChildren","link":"\/redirect","parent":null},{"subid":"6","id":"6","name":"\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00e6\u00f8\u00e5","alias":"aeiouaeiouaoa","type":"0","numchildren":"1","classes":"menuItemTop ajaxmenu_hasChildren","link":"\/aeiouaeiouaoa","parent":null}]]';
+$expected='[null,[{"subid":"1","id":"1","name":"test2","alias":"test2","type":"0","numchildren":"0","classes":"menuItemTop first c1","link":"\/test2","parent":null},{"subid":"4","id":"4","name":"redirect","alias":"redirect","type":"1","numchildren":"1","classes":"menuItemTop c2 ajaxmenu_hasChildren","link":"\/redirect","parent":null},{"subid":"6","id":"6","name":"\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00e6\u00f8\u00e5","alias":"aeiouaeiouaoa","type":"0","numchildren":"1","classes":"menuItemTop c3 ajaxmenu_hasChildren","link":"\/aeiouaeiouaoa","parent":null}]]';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'list of root pages doesn\'t show new sub-page.<br/>expected:<br/>'
