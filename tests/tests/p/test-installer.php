@@ -40,6 +40,9 @@ $file=Curl_get('http://kvwebmerun/install/step1.php', array(
 	'db_name'=>$dbname,
 	'action'=>'Configure Database'
 ));
+if ($file && strpos($file, "connect to local MySQL")!==false) {
+	die('{"errors":"database appears to be down"}');
+}
 if (!$file || strpos($file, 'document.location="/install/step2.php";')===false) {
 	die('{"errors":"failed when checking correct data in step 1"}');
 }

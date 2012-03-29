@@ -1,5 +1,6 @@
 <?php
 require_once '../config.php';
+echo '1';exit;
 $run_dir=realpath('../../run');
 function rrmdir($dir) {
 	$objects = scandir($dir);
