@@ -1,5 +1,5 @@
 <?php
-$expected=438; // acceptable number of issues
+$expected=395; // acceptable number of issues
 
 require_once '../config.php';
 $run_dir=realpath('../../run');
@@ -33,7 +33,7 @@ if ($total==0) {
 	echo '{"errors":"no formatting problems found... that\'s suspicious!"}';
 }
 elseif ($total<=$expected) {
-	echo '{"notes":"'.$total.' problems found. This is acceptable."}';
+	echo '{"notes":"'.$total.' problems found. This is acceptable.","ok":1}';
 }
 else {
 	echo '{"errors":"'.$total.' problems found. This is above the allowed '

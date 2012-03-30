@@ -20,5 +20,10 @@ rrmdir($run_dir.'/files');
 if (file_exists($run_dir.'/files')) {
 	echo '{"errors":"could not remove files"}';
 }
+rrmdir($run_dir.'/xdebug');
+if (file_exists($run_dir.'/xdebug')) {
+	echo '{"errors":"could not remove xdebug"}';
+}
+unlink($run_dir.'/.htaccess');
 `echo "drop database kvwebmetest; create database kvwebmetest;" | mysql -uroot`;
 echo '{"ok":1,"notes":"actual time may vary"}';

@@ -66,6 +66,13 @@ $(function(){
 		addRow('Check Code Formatting', 300);
 		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
+			ret.ok && testCodeCoverage();
+		}, 'json');
+	}
+	function testCodeCoverage() {
+		addRow('Check Code Coverage', 300);
+		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
 		}, 'json');
 	}
 

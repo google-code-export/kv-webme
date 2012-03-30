@@ -155,6 +155,10 @@ if (!$file || strpos($file, 'This is your new website')===false) {
 @mkdir($userbase.'/xdebug');
 file_put_contents(
 	'../../run/.htaccess',
-	'php_flag xdebug.profiler_enable On'
+	"php_flag xdebug.profiler_enable On\n"
+	.'php_value auto_prepend_file "'.dirname(__FILE__)
+	.'/coverage-prepend.php"'."\n"
+	.'php_value auto_append_file "'.dirname(__FILE__)
+	.'/coverage-append.php"'
 );
 echo '{"ok":1}';
