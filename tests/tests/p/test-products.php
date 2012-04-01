@@ -69,6 +69,45 @@ if (strpos($file, '<div class="products-pagination">')===false) {
 	die('{"errors":"failed to add Products page"}');
 }
 // }
+// { load products edit page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=products&_page=products-edit',
+	array()
+);
+if (strpos($file, 'EAN-13 barcode')===false) {
+	die('{"errors":"failed to load Products edit page"}');
+}
+// }
+// { check list of existing types
+$file=Curl_get('http://kvwebmerun/a/p=products/f=typesGet');
+$expected='{"sEcho":0,"iTotalRecords":0,"iTotalDisplayRecords":0,"aaData":[]}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could note check list of types.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { get list of type templates
+$file=Curl_get('http://kvwebmerun/a/p=products/f=typesTemplatesGet');
+$expected='["default"]';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could note check list of type templates.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { install default type
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeCopy/id=default');
+$expected='{"id":1}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could note create product type.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
@@ -77,4 +116,4 @@ if (strpos($file, 'Forgotten Password')===false) {
 }
 // }
 
-echo '{"ok":7}';
+echo '{"ok":1}';

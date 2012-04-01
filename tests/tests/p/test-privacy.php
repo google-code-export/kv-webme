@@ -1,0 +1,85 @@
+<?php
+require_once '../config.php';
+require_once 'libs.php';
+
+// { login
+$file=Curl_get('http://kvwebmerun/a/f=login', array(
+	'email'=>'testemail@localhost.test',
+	'password'=>'password'
+));
+$file=Curl_get('http://kvwebmerun/ww.admin/', array());
+if (strpos($file, '<!-- end of WebME admin -->')===false) {
+	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
+}
+// }
+// { check current list of installed plugins
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled', array());
+$expected='{"panels":{"name":"Panels","description":"Allows content section'
+	.'s to be displayed throughout the site.","version":5},"products":{"name"'
+	.':"Products","description":"Product catalogue.","version":"39"}}';
+if ($expected!=$file) {
+	die(
+		json_encode(array(
+			'errors'=>'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { add Privacy plugin using InstallOne method
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=privacy');
+$expected='{"ok":1}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { check current list of installed plugins
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
+$expected='{"panels":{"name":"Panels","description":"Allows content section'
+	.'s to be displayed throughout the site.","version":5},"products":{"name"'
+	.':"Products","description":"Product catalogue.","version":"39"},"privacy'
+	.'":{"name":"User Authentication","description":"User authentication, pag'
+	.'e protection.","version":"0"},"image-gallery":{"name":"Image Gallery","'
+	.'description":"Allows a directory of images to be shown as a gallery.","'
+	.'version":3}}';
+if ($expected!=$file) {
+	die(
+		json_encode(array(
+			'errors'=>'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { add a privacy page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
+	'parent'=>0,
+	'name'  =>'privacy',
+	'type'  =>'privacy'
+));
+$expected='{"id":"9","pid":0,"alias":"privacy"}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'privacy page not created.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { load the page to see that it worked
+$file=Curl_get('http://kvwebmerun/privacy', array());
+if (strpos($file, 'User Details')===false) {
+	die('{"errors":"failed to add Privacy page"}');
+}
+// }
+// { logout
+$file=Curl_get('http://kvwebmerun/a/f=logout', array());
+$file=Curl_get('http://kvwebmerun/ww.admin/', array());
+if (strpos($file, 'Forgotten Password')===false) {
+	die('{"errors":"failed to log out"}');
+}
+// }
+
+echo '{"ok":1}';

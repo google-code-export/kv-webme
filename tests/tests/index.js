@@ -63,8 +63,15 @@ $(function(){
 		}, 'json');
 	}
 	function testProducts() {
-		addRow('Products');
+		addRow('Products plugin');
 		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testPrivacy();
+		}, 'json');
+	}
+	function testPrivacy() {
+		addRow('User Authentication plugin');
+		$.post('p/test-privacy.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
