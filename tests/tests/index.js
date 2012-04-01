@@ -1,86 +1,93 @@
 $(function(){
 	function teardown() {
-		addRow('Teardown previous tests', 3.5);
+		addRow('Teardown previous tests');
 		$.post('/p/teardown.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			testCopySite();
 		}, 'json');
 	}
 	function testCopySite() {
-		addRow('Copy Site', 2);
+		addRow('Copy Site');
 		$.post('p/copy-site.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			testInstaller();
 		}, 'json');
 	}
 	function testInstaller() {
-		addRow('Installer', 4);
+		addRow('Installer');
 		$.post('p/test-installer.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testAdminLogin();
 		}, 'json');
 	}
 	function testAdminLogin() {
-		addRow('Admin Login', 1);
+		addRow('Admin Login');
 		$.post('p/test-admin-login.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPluginInstallDeinstall();
 		}, 'json');
 	}
 	function testPluginInstallDeinstall() {
-		addRow('Plugin Installation and Deinstallation', 1);
+		addRow('Plugin Installation and Deinstallation');
 		$.post('p/test-plugin-install-deinstall.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageCreation();
 		}, 'json');
 	}
 	function testPageCreation() {
-		addRow('Page Creation', 1);
+		addRow('Page Creation');
 		$.post('p/test-page-creation.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageEditing();
 		}, 'json');
 	}
 	function testPageEditing() {
-		addRow('Page Editing', 1);
+		addRow('Page Editing');
 		$.post('p/test-page-editing.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageRedirect();
 		}, 'json');
 	}
 	function testPageRedirect() {
-		addRow('Page-type: Redirect', 1);
+		addRow('Page-type: Redirect');
 		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageNonLatin();
 		}, 'json');
 	}
 	function testPageNonLatin() {
-		addRow('Non-latin page names', 1);
+		addRow('Non-latin page names');
 		$.post('p/test-page-non-latin.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testProducts();
+		}, 'json');
+	}
+	function testProducts() {
+		addRow('Products');
+		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
 	function testCodeFormatting() {
-		addRow('Check Code Formatting', 300);
+		addRow('Check Code Formatting');
 		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testCodeCoverage();
 		}, 'json');
 	}
 	function testCodeCoverage() {
-		addRow('Check Code Coverage', 300);
+		addRow('Check Code Coverage');
 		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 		}, 'json');
 	}
 
 	var starttime=0, timer=false;
-	function addRow(name, est) {
+	function addRow(name) {
 		$('#current').removeAttr('id');
 		$('<tr id="current">'
-			+'<th>'+name+'</th><td class="est">'+est+'</td><td class="act"></td>'
+			+'<th>'+name+'</th><td class="time"></td>'
 			+'<td class="errors"></td><td class="notes"></td>'
 			+'</tr>'
 		)
@@ -89,7 +96,7 @@ $(function(){
 	}
 	function startTests(ret) {
 		$('<table id="tests">'
-			+'<tr><th>Name</th><th>Time Est.</th><th>Time Act.</th>'
+			+'<tr><th>Name</th><th>Time</th>'
 			+'<th>Errors</th><th>Notes</th></tr>'
 			+'</table>')
 			.appendTo($('body').empty());
@@ -103,17 +110,13 @@ $(function(){
 	function timerUpdate() {
 		timer=setTimeout(timerUpdate, 500);
 		var d=new Date();
-		$('#current .act').text((d.getTime()-starttime)/1000);
+		$('#current .time').text((d.getTime()-starttime)/1000);
 	}
 	function timerStop(ret) {
 		clearTimeout(timer);
 		var d=new Date();
 		var ms=d.getTime()-starttime;
-		$('#current .act').text(ms/1000);
-		var est=$('#current .est').text()*1000;
-		if (ms>est) {
-			$('#current .est').addClass('late');
-		}
+		$('#current .time').text(ms/1000);
 		if (ret.notes) {
 			$('#current .notes').text(ret.notes);
 		}
