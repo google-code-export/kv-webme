@@ -12,8 +12,8 @@ function testCoverageFile($file) {
 	global $run_dir, $largest_offender, $largest_offender_size,
 		$largest_offender_coverage, $lines_in_total, $lines_covered;
 	$coverage=file($run_dir.'/files/xdebug/coverage');
-	$lines_in_file=count(file($file));
-	$lines_in_total+=$lines_in_file;
+	$flines=file($file);
+	$lines_in_file=count($flines);
 	$lines_tested=array();
 	foreach ($coverage as $data) {
 		if ($data=='') {
@@ -30,12 +30,32 @@ function testCoverageFile($file) {
 			}
 		}
 	}
-#	file_put_contents(
-#		$run_dir.'/files/xdebug/coverage',
-#		join("\n", $newcoverage)
-#	);
+	$percent=0;
+	if (count($lines_tested)) {
+		$lines_not_tested=0;
+		sort($lines_tested);
+#		echo '<br/><strong>'.$file.'</strong><br/>';
+		for ($i=0;$i<$lines_in_file;++$i) {
+			if (in_array($i, $lines_tested)) {
+				continue;
+			}
+			$line=$flines[$i];
+			$line=trim($line);
+			if ($line==''
+				|| preg_match('/^(\*|\/|public|global|}|static|function|class)/', $line)
+				|| preg_match('/^(if |foreach |elseif |else |<)/', $line)
+			) {
+				continue;
+			}
+#			echo htmlspecialchars($line).'<br/>'."\n";
+			$lines_not_tested++;
+		}
+#		echo join(', ', $lines_tested);
+		$lines_in_file = $lines_not_tested + count($lines_tested);
+		$percent=count($lines_tested)/$lines_in_file;
+	}
+	$lines_in_total+=$lines_in_file;
 	$lines_covered+=count($lines_tested);
-	$percent=count($lines_tested)/$lines_in_file;
 	if ($percent<$largest_offender_coverage) {
 		$largest_offender=$file;
 		$largest_offender_size=filesize($file);
