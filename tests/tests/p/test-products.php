@@ -26,7 +26,7 @@ if ($expected!=$file) {
 // }
 // { add Products plugin using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=products');
-$expected='{"ok":1}';
+$expected='{"ok":1,"added":["products"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -55,7 +55,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'name'  =>'products',
 	'type'  =>'products'
 ));
-$expected='{"id":"8","pid":0,"alias":"products"}';
+$expected='{"id":"2","pid":0,"alias":"products"}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'products page not created.<br/>expected:<br/>'
@@ -107,6 +107,27 @@ if ($file!=$expected) {
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
+// }
+// { cleanup
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete redirect page"}');
+}
+// { remove plugins
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
+	array('plugins[panels]'=>'on')
+);
+$expected='{"ok":1,"added":[],"removed":["products"]}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

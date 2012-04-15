@@ -80,6 +80,9 @@ if ($file!='[{"data":"Home","attr":{"id":"page_1"},"children":false}]') {
 	die('{"errors":"failed to list pages after deleting remaining test page"}');
 }
 // }
+// { cleanup
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+// }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());

@@ -14,8 +14,8 @@ if (strpos($file, '<!-- end of WebME admin -->')===false) {
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled', array());
-$expected='{"panels":{"name":"Panels","description":"Allows content section'
-	.'s to be displayed throughout the site.","version":5}}';
+$expected='{"panels":{"name":"Panels","description":"Allows content '
+	.'sections to be displayed throughout the site.","version":5}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -24,9 +24,9 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add Privacy plugin using InstallOne method
-$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=privacy');
-$expected='{"ok":1,"added":["privacy"],"removed":[]}';
+// { add OnlineStore plugin using InstallOne method
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=online-store');
+$expected='{"ok":1,"added":["online-store"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -39,9 +39,10 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
-	.'s to be displayed throughout the site.","version":5},"privacy'
-	.'":{"name":"User Authentication","description":"User authentication, pag'
-	.'e protection.","version":"0"}}';
+	.'s to be displayed throughout the site.","version":5}'
+	.',"online-store":{"name":"Online Store","description":"Add online-shopping'
+	.' capabilities to some plugins. REQUIRES products plugin.","version":"13"}'
+	.'}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -50,24 +51,33 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add a privacy page
+// { add an online store pate
 $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'parent'=>0,
-	'name'  =>'privacy',
-	'type'  =>'privacy'
+	'name'  =>'online-store',
+	'type'  =>'online-store'
 ));
-$expected='{"id":"2","pid":0,"alias":"privacy"}';
+$expected='{"id":"2","pid":0,"alias":"online-store"}';
 if ($file!=$expected) {
 	die(json_encode(array(
-		'errors'=>'privacy page not created.<br/>expected:<br/>'
+		'errors'=>'online-store page not created.<br/>expected:<br/>'
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
 // }
 // { load the page to see that it worked
-$file=Curl_get('http://kvwebmerun/privacy', array());
-if (strpos($file, 'User Details')===false) {
-	die('{"errors":"failed to add Privacy page"}');
+$file=Curl_get('http://kvwebmerun/online-store', array());
+if (strpos($file, 'No items in your basket')===false) {
+	die('{"errors":"failed to add OnlineStore page"}');
+}
+// }
+// { load online-store edit page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/pages/form.php?id=2',
+	array()
+);
+if (strpos($file, 'No orders with this status exist')===false) {
+	die('{"errors":"failed to load OnlineStore edit page"}');
 }
 // }
 // { cleanup
@@ -75,11 +85,12 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
 	die('{"errors":"failed to delete redirect page"}');
 }
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 	array('plugins[panels]'=>'on')
 );
-$expected='{"ok":1,"added":[],"removed":["privacy"]}';
+$expected='{"ok":1,"added":[],"removed":["online-store"]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -89,7 +100,6 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

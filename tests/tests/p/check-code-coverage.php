@@ -34,14 +34,14 @@ function testCoverageFile($file) {
 	if (count($lines_tested)) {
 		$lines_not_tested=0;
 		sort($lines_tested);
-		$lines_in_file=`sloccount --details --datadir /tmp "$file"`;
+		$lines_in_file=@`sloccount --details --datadir /tmp "$file"`;
 		$lines_in_file=(int)preg_replace(
 			'/.*Computing results\.([0-9]*)	.*/',
 			'\1',
 			str_replace("\n", '', $lines_in_file)
 		);
 		$lines_not_tested=$lines_in_file-count($lines_tested);
-		$percent=count($lines_tested)/$lines_in_file;
+		$percent=$lines_in_file?count($lines_tested)/$lines_in_file:1;
 	}
 	$lines_in_total+=$lines_in_file;
 	$lines_covered+=count($lines_tested);

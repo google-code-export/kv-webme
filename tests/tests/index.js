@@ -38,19 +38,12 @@ $(function(){
 		addRow('Page Creation');
 		$.post('p/test-page-creation.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
-			ret.ok && testPageEditing();
+			ret.ok && testOnlineStore();
 		}, 'json');
 	}
-	function testPageEditing() {
-		addRow('Page Editing');
-		$.post('p/test-page-editing.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPageRedirect();
-		}, 'json');
-	}
-	function testPageRedirect() {
-		addRow('Page-type: Redirect');
-		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
+	function testOnlineStore() {
+		addRow('OnlineStore plugin');
+		$.post('p/test-online-store.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPageNonLatin();
 		}, 'json');
@@ -59,12 +52,12 @@ $(function(){
 		addRow('Non-latin page names');
 		$.post('p/test-page-non-latin.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
-			ret.ok && testProducts();
+			ret.ok && testPageRedirect();
 		}, 'json');
 	}
-	function testProducts() {
-		addRow('Products plugin');
-		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
+	function testPageRedirect() {
+		addRow('Page-type: Redirect');
+		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testPrivacy();
 		}, 'json');
@@ -73,19 +66,33 @@ $(function(){
 		addRow('User Authentication plugin');
 		$.post('p/test-privacy.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
+			ret.ok && testPageEditing();
+		}, 'json');
+	}
+	function testPageEditing() {
+		addRow('Page Editing');
+		$.post('p/test-page-editing.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testProducts();
+		}, 'json');
+	}
+	function testProducts() {
+		addRow('Products plugin');
+		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testCodeFormatting();
+		}, 'json');
+	}
+	function testCodeCoverage() {
+		addRow('Check Code Coverage');
+		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
 	function testCodeFormatting() {
 		addRow('Check Code Formatting');
 		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testCodeCoverage();
-		}, 'json');
-	}
-	function testCodeCoverage() {
-		addRow('Check Code Coverage');
-		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 		}, 'json');
 	}

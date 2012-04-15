@@ -43,7 +43,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 		'plugins[panels]'=>'on'
 	)
 );
-$expected='{"ok":1}';
+$expected='{"ok":1,"added":["backup"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -93,7 +93,7 @@ if (strpos($file, $expected)===false) {
 // }
 // { add Products plugin using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=products');
-$expected='{"ok":1}';
+$expected='{"ok":1,"added":["products"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -132,7 +132,7 @@ if (strpos($file, $expected)===false) {
 // }
 // { remove Products plugin with RemoveOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsRemoveOne/name=products');
-$expected='{"ok":1}';
+$expected='{"ok":1,"added":[],"removed":["products"]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -162,7 +162,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 		'plugins[panels]'=>'on'
 	)
 );
-$expected='{"ok":1}';
+$expected='{"ok":1,"added":[],"removed":["backup"]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(

@@ -18,7 +18,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'name'  =>'redirect',
 	'type'  =>1
 ));
-$expected='{"id":"4","pid":0,"alias":"redirect"}';
+$expected='{"id":"2","pid":0,"alias":"redirect"}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'failed to add redirect page<br/>expected:<br/>'
@@ -28,7 +28,7 @@ if ($file!=$expected) {
 // }
 // { edit the page to add the target
 $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
-	'id'                    =>4,
+	'id'                    =>2,
 	'name'                  =>'{"en":"redirect"}',
 	'type'                  =>1,
 	'date_publish'          =>'2001-01-01',
@@ -37,7 +37,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'template'              =>'_default',
 	'page_vars[redirect_to]'=>'/redirect/target'
 ));
-$expected='{"id":4,"pid":"0","alias":"redirect"}';
+$expected='{"id":2,"pid":"0","alias":"redirect"}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'failed to edit redirect page.<br />'
@@ -48,11 +48,11 @@ if ($file!=$expected) {
 // }
 // { add target page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
-	'parent'=>4,
+	'parent'=>2,
 	'name'  =>'target',
 	'type'  =>0
 ));
-$expected='{"id":"5","pid":4,"alias":"target"}';
+$expected='{"id":"3","pid":2,"alias":"target"}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'failed to add redirect target page<br/>expected:<br/>'
@@ -62,7 +62,7 @@ if ($file!=$expected) {
 // }
 // { add some text to the target page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
-	'id'             =>5,
+	'id'             =>3,
 	'name'           =>'{"en":"target"}',
 	'type'           =>0,
 	'date_publish'   =>'2001-01-01',
@@ -71,7 +71,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'template'       =>'_default',
 	'body[en]'       =>'redirection worked'
 ));
-$expected='{"id":5,"pid":"4","alias":"target"}';
+$expected='{"id":3,"pid":"2","alias":"target"}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'failed to edit redirect target page.<br />'
@@ -88,6 +88,17 @@ if (strpos($file, 'redirection worked')===false) {
 			.htmlspecialchars($file)
 	)));
 }
+// }
+// { cleanup
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=3');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete redirect target page"}');
+}
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete redirect page"}');
+}
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

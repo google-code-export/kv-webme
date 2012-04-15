@@ -15,10 +15,12 @@ function rrmdir($dir) {
 rrmdir($run_dir.'/trunk');
 if (file_exists($run_dir.'/trunk')) {
 	echo '{"errors":"could not remove trunk"}';
+	exit;
 }
 rrmdir($run_dir.'/files');
 if (file_exists($run_dir.'/files')) {
 	echo '{"errors":"could not remove files"}';
+	exit;
 }
 rrmdir($run_dir.'/xdebug');
 if (file_exists($run_dir.'/xdebug')) {

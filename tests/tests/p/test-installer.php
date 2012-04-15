@@ -152,7 +152,8 @@ if (!$file || strpos($file, 'This is your new website')===false) {
 }
 // }
 
-@mkdir($userbase.'/xdebug');
+@mkdir($userbase.'/xdebug', 0777);
+file_put_contents($userbase.'/xdebug/coverage', '');
 file_put_contents(
 	'../../run/.htaccess',
 	"php_flag xdebug.profiler_enable On\n"
@@ -161,4 +162,5 @@ file_put_contents(
 	.'php_value auto_append_file "'.dirname(__FILE__)
 	.'/coverage-append.php"'
 );
+chmod('../../run/.htaccess', 0644);
 echo '{"ok":1}';

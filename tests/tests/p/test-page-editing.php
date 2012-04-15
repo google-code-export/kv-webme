@@ -36,7 +36,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 $expected='{"id":1,"pid":"0","alias":"test2"}';
 if ($file!=$expected) {
 	die(json_encode(array(
-		'errors'=>'failed to add home page.<br />'
+		'errors'=>'failed to edit home page.<br />'
 			.'expected: '.$expected.'<br/>'
 			.'actual: '.$file
 	)));
@@ -56,6 +56,31 @@ if (strpos($file, '<meta http-equiv="description" content="test5"/>')===false) {
 if (strpos($file, '<meta http-equiv="keywords" content="test4" />')===false) {
 	die('{"errors":"failed to edit front page keywords"}');
 }
+// }
+// { cleanup
+$file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
+	'id'             =>1,
+	'name'           =>'{"en":"Home"}',
+	'type'           =>0,
+	'title'          =>'test3',
+	'keywords'       =>'test4',
+	'description'    =>'test5',
+	'date_publish'   =>'2001-01-01',
+	'date_unpublish' =>'2200-01-01',
+	'associated_date'=>'2001-01-01',
+	'template'       =>'_default',
+	'special[0]'     =>'on',
+	'body[en]'       =>'<p>test2</p>'
+));
+$expected='{"id":1,"pid":"0","alias":"home"}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'failed to restore home page.<br />'
+			.'expected: '.$expected.'<br/>'
+			.'actual: '.$file
+	)));
+}
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

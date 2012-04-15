@@ -12,7 +12,7 @@ function chmod_R($path, $filemode, $dirmode) {
 		while (($file = readdir($dh)) !== false) { 
 			if($file != '.' && $file != '..') {  // skip self and parent pointing directories 
 				$fullpath = $path.'/'.$file; 
-				chmod_R($fullpath, $filemode,$dirmode); 
+				chmod_R($fullpath, $filemode, $dirmode); 
 			} 
 		} 
 		closedir($dh); 
@@ -32,7 +32,7 @@ function chmod_R($path, $filemode, $dirmode) {
 require_once '../config.php';
 $run_dir=realpath('../../run');
 @mkdir($run_dir.'/files');
-`rsync ../../../trunk $run_dir/ -r --exclude '*svn*' --exclude 'ww.plugins/_*'`;
+`rsync ../../../trunk $run_dir/ -ra --exclude '*svn*' --exclude 'ww.plugins/_*'`;
 unlink($run_dir.'/trunk/.private/config.php');
 chmod_R($run_dir.'/trunk', 0744, 0755);
 echo '{"ok":1,"notes":"actual time may vary"}';
