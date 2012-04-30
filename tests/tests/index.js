@@ -83,16 +83,16 @@ $(function(){
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
-	function testCodeCoverage() {
-		addRow('Check Code Coverage');
-		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testCodeFormatting();
-		}, 'json');
-	}
 	function testCodeFormatting() {
 		addRow('Check Code Formatting');
 		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testCodeCoverage();
+		}, 'json');
+	}
+	function testCodeCoverage() {
+		addRow('Check Code Coverage');
+		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 		}, 'json');
 	}

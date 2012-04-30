@@ -41,7 +41,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5}'
 	.',"online-store":{"name":"Online Store","description":"Add online-shopping'
-	.' capabilities to some plugins. REQUIRES products plugin.","version":"13"}'
+	.' capabilities to some plugins. REQUIRES products plugin.","version":"14"}'
 	.'}';
 if ($expected!=$file) {
 	die(
@@ -51,7 +51,7 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add an online store pate
+// { add an online store page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
 	'parent'=>0,
 	'name'  =>'online-store',
@@ -76,7 +76,7 @@ $file=Curl_get(
 	'http://kvwebmerun/ww.admin/pages/form.php?id=2',
 	array()
 );
-if (strpos($file, 'No orders with this status exist')===false) {
+if (strpos($file, '{$Billing_FirstName}')===false) {
 	die('{"errors":"failed to load OnlineStore edit page"}');
 }
 // }

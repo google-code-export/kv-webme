@@ -1,0 +1,9 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="all">
+			<file>teardown.php</file>
+			<file>copySite.php</file>
+			<file>testInstaller.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>
