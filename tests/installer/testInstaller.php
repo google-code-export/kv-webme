@@ -120,7 +120,7 @@ class testInstaller extends PHPUnit_Framework_TestCase{
 			'password2'=>'pass2',
 			'action'=>'Create Admin'
 		));
-		$this->assertEquals(true, $file);
+		$this->assertTrue(strpos($file, '<body>')!==false);
 		$this->assertEquals(
 			false,
 			strpos($file, 'Passwords do not match or are empty.')===false
