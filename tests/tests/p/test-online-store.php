@@ -41,7 +41,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5}'
 	.',"online-store":{"name":"Online Store","description":"Add online-shopping'
-	.' capabilities to some plugins. REQUIRES products plugin.","version":"14"}'
+	.' capabilities to some plugins. REQUIRES products plugin.","version":"15"}'
 	.'}';
 if ($expected!=$file) {
 	die(
@@ -76,7 +76,7 @@ $file=Curl_get(
 	'http://kvwebmerun/ww.admin/pages/form.php?id=2',
 	array()
 );
-if (strpos($file, '{$Billing_FirstName}')===false) {
+if (strpos($file, '{{ONLINESTORE_COUNTRIES}}')===false) {
 	die('{"errors":"failed to load OnlineStore edit page"}');
 }
 // }
