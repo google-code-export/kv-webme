@@ -8,7 +8,7 @@ $file=Curl_get('http://kvwebmerun/a/f=login', array(
 	'password'=>'password'
 ));
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
-if (strpos($file, '<!-- end of WebME admin -->')===false) {
+if (strpos($file, '<!-- end of admin -->')===false) {
 	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
 }
 // }
@@ -109,7 +109,7 @@ $expected='{"backup":{"name":"Backup","description":"backup your website, o'
 	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5},"products":{"name":"Products","description":"Product'
-	.' catalogue.","version":"42"}}';
+	.' catalogue.","version":"43"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(

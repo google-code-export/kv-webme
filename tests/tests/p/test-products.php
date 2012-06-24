@@ -8,7 +8,7 @@ $file=Curl_get('http://kvwebmerun/a/f=login', array(
 	'password'=>'password'
 ));
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
-if (strpos($file, '<!-- end of WebME admin -->')===false) {
+if (strpos($file, '<!-- end of admin -->')===false) {
 	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
 }
 // }
@@ -40,7 +40,7 @@ if (strpos($file, $expected)===false) {
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5},"products":{"name"'
-	.':"Products","description":"Product catalogue.","version":"42"}}';
+	.':"Products","description":"Product catalogue.","version":"43"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(

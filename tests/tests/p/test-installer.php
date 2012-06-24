@@ -138,7 +138,7 @@ if (!$file || strpos($file, 'document.location="/install/step7.php";')===false) 
 // }
 // { load final page in wizard
 $file=Curl_get('http://kvwebmerun/install/step7.php');
-if (!$file || strpos($file, 'Your WebME installation is complete')===false) {
+if (!$file || strpos($file, 'installation is complete')===false) {
 	die('{"errors":"could not load final page in wizard"}');
 }
 // }

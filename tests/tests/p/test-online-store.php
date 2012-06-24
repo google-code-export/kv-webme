@@ -8,7 +8,7 @@ $file=Curl_get('http://kvwebmerun/a/f=login', array(
 	'password'=>'password'
 ));
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
-if (strpos($file, '<!-- end of WebME admin -->')===false) {
+if (strpos($file, '<!-- end of admin -->')===false) {
 	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
 }
 // }
