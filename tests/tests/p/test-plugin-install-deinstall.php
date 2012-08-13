@@ -69,7 +69,7 @@ if ($expected!=$file) {
 // }
 // { now try add backup plugin again using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=backup');
-$expected='{"ok":1,"message":"already installed"}';
+$expected='{"ok":1,"message":"Plugin already installed"}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -81,7 +81,7 @@ if (strpos($file, $expected)===false) {
 // }
 // { try add a non-existing plugin using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=nosuchplug');
-$expected='{"ok":0,"message":"plugin not found"}';
+$expected='{"ok":0,"message":"Plugin not found"}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -109,7 +109,7 @@ $expected='{"backup":{"name":"Backup","description":"backup your website, o'
 	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5},"products":{"name":"Products","description":"Product'
-	.' catalogue.","version":"43"}}';
+	.' catalogue.","version":"44"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -120,7 +120,7 @@ if ($expected!=$file) {
 // }
 // { try remove a non-existent plugin with RemoveOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsRemoveOne/name=nosuchplug');
-$expected='{"ok":1,"message":"already removed"}';
+$expected='{"ok":1,"message":"Plugin already removed"}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(

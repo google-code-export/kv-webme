@@ -58,6 +58,11 @@ function testCoverageFile($file) {
 	}
 }
 function testCoverageDirectory($dir) {
+	if (strpos($dir, 'dompdf')!==false
+		|| strpos($dir, 'saorfm')!==false
+	) {
+		return;
+	}
 	$files=new DirectoryIterator($dir);
 	foreach ($files as $file) {
 		if ($file->isDot()) {
@@ -89,7 +94,9 @@ function testCoverageDirectory($dir) {
 			// { ignore any files that are not mine...
 			if (in_array($file->getFilename(), array(
 				'phpqrcode.php',
-				'AmazonProductAPI.php'
+				'TreeBuilder.php',
+				'AmazonProductAPI.php',
+				'class.pdf.php'
 			))) {
 				continue;
 			}

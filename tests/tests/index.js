@@ -38,13 +38,6 @@ $(function(){
 		addRow('Page Creation');
 		$.post('p/test-page-creation.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
-			ret.ok && testOnlineStore();
-		}, 'json');
-	}
-	function testOnlineStore() {
-		addRow('OnlineStore plugin');
-		$.post('p/test-online-store.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
 			ret.ok && testPageNonLatin();
 		}, 'json');
 	}
@@ -79,6 +72,13 @@ $(function(){
 	function testProducts() {
 		addRow('Products plugin');
 		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testOnlineStore();
+		}, 'json');
+	}
+	function testOnlineStore() {
+		addRow('OnlineStore plugin');
+		$.post('p/test-online-store.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');

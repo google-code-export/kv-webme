@@ -41,7 +41,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5}'
 	.',"online-store":{"name":"Online Store","description":"Add online-shopping'
-	.' capabilities to some plugins. REQUIRES products plugin.","version":"15"}'
+	.' capabilities to some plugins.","version":"15"}'
 	.'}';
 if ($expected!=$file) {
 	die(
