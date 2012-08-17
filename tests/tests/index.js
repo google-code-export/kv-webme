@@ -80,6 +80,20 @@ $(function(){
 		addRow('OnlineStore plugin');
 		$.post('p/test-online-store.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
+			ret.ok && testImageGallery();
+		}, 'json');
+	}
+	function testImageGallery() {
+		addRow('ImageGallery plugin');
+		$.post('p/test-image-gallery.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
+			ret.ok && testForms();
+		}, 'json');
+	}
+	function testForms() {
+		addRow('Forms plugin');
+		$.post('p/test-forms.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}

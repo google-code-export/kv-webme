@@ -121,6 +121,19 @@ if (!$file || strpos($file, 'document.location="/install/step6.php"')===false) {
 	die('{"errors":"could not install config.php file"}');
 }
 // }
+// { add code coverage to htaccess
+@mkdir($userbase.'/xdebug', 0777);
+file_put_contents($userbase.'/xdebug/coverage', '');
+file_put_contents(
+	'../../run/.htaccess',
+	"php_flag xdebug.profiler_enable On\n"
+	.'php_value auto_prepend_file "'.dirname(__FILE__)
+	.'/coverage-prepend.php"'."\n"
+	.'php_value auto_append_file "'.dirname(__FILE__)
+	.'/coverage-append.php"'
+);
+chmod('../../run/.htaccess', 0644);
+// }
 // { load theme installer
 $file=Curl_get('http://kvwebmerun/install/step6.php');
 if (!$file || strpos($file, 'Select Themes')===false) {
@@ -152,15 +165,4 @@ if (!$file || strpos($file, 'This is your new website')===false) {
 }
 // }
 
-@mkdir($userbase.'/xdebug', 0777);
-file_put_contents($userbase.'/xdebug/coverage', '');
-file_put_contents(
-	'../../run/.htaccess',
-	"php_flag xdebug.profiler_enable On\n"
-	.'php_value auto_prepend_file "'.dirname(__FILE__)
-	.'/coverage-prepend.php"'."\n"
-	.'php_value auto_append_file "'.dirname(__FILE__)
-	.'/coverage-append.php"'
-);
-chmod('../../run/.htaccess', 0644);
 echo '{"ok":1}';
