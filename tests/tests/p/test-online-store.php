@@ -80,17 +80,19 @@ if (strpos($file, '{{ONLINESTORE_COUNTRIES}}')===false) {
 	die('{"errors":"failed to load OnlineStore edit page"}');
 }
 // }
-// { cleanup
+// { delete it, to try using the wizard
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
-	die('{"errors":"failed to delete redirect page"}');
+	die('{"errors":"failed to delete online store page (1)"}');
 }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
-// { remove plugins
-$file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
-	array('plugins[panels]'=>'on')
+// }
+// { test the wizard
+// { wizard opening page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=online-store&_page=wizard'
 );
-$expected='{"ok":1,"added":[],"removed":["online-store"]}';
+$expected='div id="online-store-wizard"';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -100,6 +102,140 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
+// { page 1
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/online-store/admin/wizard/step1.php'
+);
+$expected='name for the page';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.htmlspecialchars($file)
+		))
+	);
+}
+// }
+// { page 2
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/online-store/admin/wizard/step2.php',
+	array(
+		'wizard-name'=>'online-store'
+	)
+);
+$expected='Do customers need to';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.htmlspecialchars($file)
+		))
+	);
+}
+// }
+// { page 3
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/online-store/admin/wizard/step3.php',
+	array(
+		'wizard-email'=>'testemail@localhost.test',
+		'wizard-login'=>'no',
+		'wizard-payment-paypal'=>0,
+		'wizard-payment-Bank Transfer'=>0,
+		'wizard-payment-Realex'=>0,
+		'wizard-paypal-email'=>'',
+		'wizard-transfer-bank-name'=>'',
+		'wizard-transfer-sort-code'=>'',
+		'wizard-transfer-account-name'=>'',
+		'wizard-transfer-account-number'=>'',
+		'wizard-message-to-buyer'=>'<p>Thank you for your purchase. Please send {{$total}} to the following bank account, quoting the invoice number {{$invoice_number}}:</p><table><tr><th>Bank</th><td>{{$bank_name}}</td></tr><tr><th>Account Name</th><td>{{$account_name}}</td></tr><tr><th>Sort Code</th><td>{{$sort_code}}</td></tr><tr><th>Account Number</th><td>{{$account_number}}</td></tr></table>',
+		'wizard-realex-merchant-id'=>'',
+		'wizard-realex-shared-secret'=>'',
+		'wizard-realex-redirect-after-payment'=>0,
+		'wizard-realex-mode'=>'test'
+	)
+);
+$expected='These details are used to populate';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.htmlspecialchars($file)
+		))
+	);
+}
+// }
+// { page 4
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/online-store/admin/wizard/step4.php',
+	array(
+		'wizard-company-name'=>'',
+		'wizard-company-telephone'=>'',
+		'wizard-company-address'=>'',
+		'wizard-company-fax'=>'',
+		'wizard-company-email'=>'',
+		'wizard-company-vat-number'=>'',
+		'wizard-company-invoice'=>2
+	)
+);
+$expected='What type of products';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.htmlspecialchars($file)
+		))
+	);
+}
+// }
+// { page 5
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/online-store/admin/wizard/step5.php',
+	array(
+		'wizard-products-type'=>'default',
+	)
+);
+$expected='Your store has been created';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.htmlspecialchars($file)
+		))
+	);
+}
+// }
+// { load online-store edit page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/pages/form.php?id=3',
+	array()
+);
+if (strpos($file, '{{ONLINESTORE_COUNTRIES}}')===false) {
+	die('{"errors":"failed to load OnlineStore edit page (after Wizard)"}');
+}
+// }
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete product page"}');
+}
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=3');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete online store page (2)"}');
+}
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+// }
+// { remove plugins
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
+	array('plugins[panels]'=>'on')
+);
+$expected='{"ok":1,"added":[],"removed":["online-store","products"]}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());
