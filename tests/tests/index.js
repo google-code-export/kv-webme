@@ -94,6 +94,13 @@ $(function(){
 		addRow('Forms plugin');
 		$.post('p/test-forms.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
+			ret.ok && testQuiz();
+		}, 'json');
+	}
+	function testQuiz() {
+		addRow('Quiz plugin');
+		$.post('p/test-quiz.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
 			ret.ok && testCodeFormatting();
 		}, 'json');
 	}
