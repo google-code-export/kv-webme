@@ -60,6 +60,97 @@ if (strpos($file, $expected)===false) {
 	)));
 }
 // }
+// { new quiz
+$file=Curl_get('http://kvwebmerun/ww.admin/plugin.php?_plugin=quiz&_page=index&action=newQuiz');
+$expected='Number of Questions';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not create new quiz.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { create the new quiz
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=quiz&_page=index&action=newQuiz',
+	array(
+		'name'=>'test quiz',
+		'description'=>'a test of a quiz',
+		'number of questions'=>2,
+		'enabled'=>1,
+		'errors[]'=>'',
+		'id'=>0,
+		'action'=>'Add Quiz'
+	)
+);
+$expected='Number of Questions';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not create the quiz settings.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { insert first question
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=quiz&_page=index&action=newQuestion&id=1',
+	array(
+		'name'=>'test quiz',
+		'description'=>'a test of a quiz',
+		'number of questions'=>2,
+		'enabled'=>1,
+		'errors[]'=>'',
+		'id'=>1,
+		'quiz_id'=>1,
+		'question'=>'what\'s your favourite colour',
+		'topic'=>'blah',
+		'answers[]'=>'Blue',
+		'answers[]'=>'Red',
+		'answers[]'=>'Aaaargh',
+		'isCorrect'=>3,
+		'answers[]'=>'',
+		'questionErrors'=>'',
+		'questionAction'=>'Add Question'
+	)
+);
+$expected='New Question';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not insert the first question.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { insert second question
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=quiz&_page=index&action=newQuestion&id=1',
+	array(
+		'name'=>'test quiz',
+		'description'=>'a test of a quiz',
+		'number of questions'=>2,
+		'enabled'=>1,
+		'errors[]'=>'',
+		'id'=>1,
+		'quiz_id'=>1,
+		'question'=>'what is the answer to this question',
+		'topic'=>'blah2',
+		'answers[]'=>'a',
+		'answers[]'=>'b',
+		'answers[]'=>'c',
+		'isCorrect'=>2,
+		'answers[]'=>'',
+		'questionErrors'=>'',
+		'questionAction'=>'Add Question'
+	)
+);
+$expected='You need to provide';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not insert the second question.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
 // { cleanup
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
