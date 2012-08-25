@@ -34,7 +34,7 @@ function testCoverageFile($file) {
 	if (count($lines_tested)) {
 		$lines_not_tested=0;
 		sort($lines_tested);
-		$lines_in_file=@`sloccount --details --datadir /tmp "$file"`;
+		$lines_in_file=@`sloccount --details --datadir /tmp/sloc "$file"`;
 		$lines_in_file=(int)preg_replace(
 			'/.*Computing results\.([0-9]*)	.*/',
 			'\1',

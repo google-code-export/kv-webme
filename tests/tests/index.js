@@ -52,6 +52,13 @@ $(function(){
 		addRow('Page-type: Redirect');
 		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
+			ret.ok && testUserManagement();
+		}, 'json');
+	}
+	function testUserManagement() {
+		addRow('User Management');
+		$.post('p/test-user-management.php?rand='+Math.random(), function(ret) {
+			timerStop(ret);
 			ret.ok && testPrivacy();
 		}, 'json');
 	}

@@ -1,5 +1,5 @@
 <?php
-$expected=385; // acceptable number of issues
+$expected=373; // acceptable number of issues
 
 require_once '../config.php';
 $run_dir=realpath('../../run');
