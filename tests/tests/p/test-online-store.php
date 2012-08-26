@@ -80,6 +80,298 @@ if (strpos($file, '{{ONLINESTORE_COUNTRIES}}')===false) {
 	die('{"errors":"failed to load OnlineStore edit page"}');
 }
 // }
+// { add products plugin using InstallOne method
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=products');
+$expected='{"ok":1,"added":["products"],"removed":[]}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { install default product type
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeCopy/id=default');
+$expected='{"id":1}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could not create product type.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { set the product type so it has prices and a button
+$file=Curl_get(
+	'http://kvwebmerun/a/p=products/f=adminTypeEdit',
+	array(
+		'data[id]'=>1,
+		'data[name]'=>'default (copy)',
+		'data[multiview_template]'=>'{{PRODUCTS_BUTTON_ADD_TO_CART}}',
+		'data[singleview_template]'=>'',
+		'data[data_fields][0][n]'=>'description',
+		'data[data_fields][0][ti]'=>'Description',
+		'data[data_fields][0][t]'=>'textarea',
+		'data[data_fields][0][s]'=>0,
+		'data[data_fields][0][r]'=>0,
+		'data[data_fields][0][u]'=>0,
+		'data[data_fields][0][e]'=>'',
+		'data[is_for_sale]'=>1,
+		'data[prices_based_on_usergroup]'=>0,
+		'data[associated_colour]'=>'ffffff',
+		'data[multiview_template_header]'=>'',
+		'data[multiview_template_footer]'=>'',
+		'data[meta]'=>'',
+		'data[is_voucher]'=>0,
+		'data[voucher_template]'=>0,
+		'data[stock_control]'=>0,
+		'data[default_category]'=>0,
+		'data[default_category_name]'=>false
+	)
+);
+$expected='{"ok":1}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { add a product to test
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=products&_page=products-edit',
+	array(
+		'id'=>0,
+		'action'=>'save',
+		'name'=>'{"en":"product1"}',
+		'product_type_id'=>1,
+		'activates_on'=>'2012-01-01 00:00:00',
+		'expires_on'=>'2100-01-01 00:00:00',
+		'stock_number'=>'',
+		'enabled'=>1,
+		'user_id'=>1,
+		'ean'=>'',
+		'location'=>0,
+		'images_directory'=>'',
+		'products_default_category'=>0
+	)
+);
+$expected='expires_on" value="2100-01-01 00:00:00"';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { edit the product to add a price
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=products&_page=products-edit',
+	array(
+		'id'=>1,
+		'action'=>'save',
+		'name'=>'{"en":"product1"}',
+		'product_type_id'=>1,
+		'activates_on'=>'2012-01-01 00:00:00',
+		'expires_on'=>'2100-01-01 00:00:00',
+		'stock_number'=>'',
+		'enabled'=>1,
+		'user_id'=>1,
+		'ean'=>'',
+		'location'=>0,
+		'images_directory'=>'',
+		'data_fields[description][en]'=>'',
+		'online-store-fields[_price]'=>123,
+		'online-store-fields[_trade_price]'=>'',
+		'online-store-fields[_sale_price]'=>'',
+		'online-store-fields[_sale_price_type]'=>0,
+		'online-store-fields[_bulk_price]'=>'',
+		'online-store-fields[_bulk_amount]'=>'',
+		'online-store-fields[_weight(kg)]'=>'',
+		'online-store-fields[_vatfree]'=>0,
+		'online-store-fields[_custom_vat_amount]'=>'',
+		'online-store-fields[_deliver_free]'=>0,
+		'online-store-fields[_not_discountable]'=>0,
+		'online-store-fields[_sold_amt]'=>'',
+		'online-store-fields[_stock_amt]'=>'',
+		'online-store-fields[_max_allowed]'=>'',
+		'products_default_category'=>0
+	)
+);
+$expected='name="online-store-fields[_price]" value="123';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { add a product page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
+	'parent'=>0,
+	'name'  =>'products',
+	'type'  =>'products'
+));
+$expected='{"id":"3","pid":0,"alias":"products"}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'products page not created.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { add 3 of the product to cart
+$file=Curl_get('http://kvwebmerun/a/f=nothing', array(
+	'products_action'=>'add_to_cart',
+	'product_id'=>1,
+	'products-howmany'=>3
+));
+$expected='[]';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'product not added to cart.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { set online-store page to use 5-step method
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/pages/form.php',
+	array( // { vals
+		'id'=>2,
+		'MAX_FILE_SIZE'=>9999999,
+		'name'=>'online-store',
+		'type'=>'online-store',
+		'page_vars[online_stores_postage]'=>'[]',
+		'page_vars[online_stores_admin_email]'=>'',
+		'online_store_currency'=>'EUR',
+		'page_vars[online_stores_vat_percent]'=>0,
+		'page_vars[online_stores_customers_usergroup]'=>'customers',
+		'page_vars[online_stores_paypal_address]'=>'',
+		'page_vars[online_stores_bank_transfer_bank_name]'=>'',
+		'page_vars[online_stores_bank_transfer_sort_code]'=>'',
+		'page_vars[online_stores_bank_transfer_account_name]'=>'',
+		'page_vars[online_stores_bank_transfer_account_number]'=>'',
+		'page_vars[online_stores_bank_transfer_message]'=>'<p>Thank you for your'
+			.' purchase. Please send {{$total}} to the following bank account,'
+			.' quoting the invoice number {{$invoice_number}}:</p> <table> <tr>'
+			.'<th>Bank</th><td>{{$bank_name}}</td></tr> <tr><th>Account Name</th>'
+			.'<td>{{$account_name}}</td></tr> <tr><th>Sort Code</th><td>'
+			.'{{$sort_code}}</td></tr> <tr><th>Account Number</th><td>'
+			.'{{$account_number}}</td></tr> </table>',
+		'page_vars[online_stores_realex_merchantid]'=>'',
+		'page_vars[online_stores_realex_sharedsecret]'=>'',
+		'page_vars[online_store_redirect_to]'=>0,
+		'page_vars[online_stores_realex_testmode]'=>'test',
+		'page_vars[online_stores_quickpay_merchantid]'=>'',
+		'page_vars[online_stores_quickpay_secret]'=>'',
+		'page_vars[online_store_quickpay_redirect_to]'=>0,
+		'page_vars[online_store_quickpay_redirect_failed]'=>0,
+		'page_vars[online_stores_quickpay_autocapture]'=>0,
+		'page_vars[online_stores_quickpay_testmode]'=>'test',
+		'page_vars[onlinestore_viewtype]'=>2,
+		'body'=>'<table class="checkout_table"> <tbody> <tr> <td width="40%">'
+			.'<h3 class="__" lang-context="core"> Delivery Details</h3>'
+			.'<table class="shoppingcartCheckout"> <tbody> <tr>'
+			.'<td class="cellHeader" colspan="1" style="width: 20%;"> Name</td>'
+			.'<td colspan="1"> <input class="text" id="FirstName" name="FirstName"'
+			.' required="required" /></td> </tr> <tr> <td class="cellHeader"'
+			.' colspan="1"> Surname</td> <td colspan="1">'
+			.'<input class="text" id="Surname" name="Surname" required="required" />'
+			.'</td> </tr> <tr> <td class="cellHeader" colspan="1"> Phone</td>'
+			.'<td colspan="1"> <input class="text" id="Phone" name="Phone"'
+			.' required="required" /></td> </tr> <tr> <td class="cellHeader"'
+			.' colspan="1"> Email</td> <td colspan="1">'
+			.'<input class="email text" id="Email" name="Email" required="required"'
+			.' type="email" /></td> </tr> <tr> <td class="cellHeader" colspan="1">'
+			.'Street</td> <td colspan="1">'
+			.'<input class="text" id="Street" name="Street" /></td> </tr> <tr>'
+			.'<td class="cellHeader" colspan="1"> Street 2</td> <td colspan="1">'
+			.'<input class="text" id="Street2" name="Street2" /></td> </tr> <tr>'
+			.'<td class="cellHeader"> Town</td> <td colspan="1">'
+			.'<input class="text" id="Town" name="Town" /></td> </tr> <tr>'
+			.'<td class="cellHeader"> County</td> <td colspan="1">'
+			.'<input class="text" id="County" name="County" /></td> </tr> <tr>'
+			.'<td class="cellHeader"> Country</td> <td colspan="1">'
+			.'<div class="countries-list"> {{ONLINESTORE_COUNTRIES}}</div> </td>'
+			.'</tr> </tbody> </table> </td> <td id="sc_paymentCell" width="60%">'
+			.'<h3> Payment Details</h3> {{ONLINESTORE_PAYMENT_TYPES}}'
+			.'<div id="payment_method_form"> &nbsp;</div> {{ONLINESTORE_VOUCHER}}'
+			.'<br /> Click here if Billing address is different to Delivery: '
+			.'<input name="BillingAddressIsDifferentToDelivery" '
+			.'onclick="document.getElementById(\'billing_address\').style.display='
+			.'(this.checked)?\'block\':\'none\'" type="checkbox" /> '
+			.'<div id="billing_address" style="display: none;">'
+			.'<table class="shoppingcartCheckout_billing"> <tbody> <tr>'
+			.'<td class="cellHeader" colspan="1" style="width: 20%;"> Name</td>'
+			.'<td colspan="1"> <input class="text" id="Billing_FirstName"'
+			.' name="Billing_FirstName" /></td> </tr> <tr> <td class="cellHeader"'
+			.' colspan="1"> Surname</td> <td colspan="1"> <input class="text"'
+			.' id="Billing_Surname" name="Billing_Surname" /></td> </tr> <tr>'
+			.'<td class="cellHeader" colspan="1"> Phone</td> <td colspan="1">'
+			.'<input class="text" id="Billing_Phone" name="Billing_Phone" /></td>'
+			.'</tr> <tr> <td class="cellHeader" colspan="1"> Email</td>'
+			.'<td colspan="1"> <input class="email text" id="Billing_Email"'
+			.' name="Billing_Email" type="email" /></td> </tr> <tr>'
+			.'<td class="cellHeader" colspan="1"> Street</td> <td colspan="1">'
+			.'<input class="text" id="Billing_Street" name="Billing_Street" /></td>'
+			.'</tr> <tr> <td class="cellHeader" colspan="1"> Street 2</td>'
+			.'<td colspan="1"> <input class="text" id="Billing_Street2"'
+			.' name="Billing_Street2" /></td> </tr> <tr> <td class="cellHeader">'
+			.'Town</td> <td colspan="1"> <input class="text" id="Billing_Town"'
+			.' name="Billing_Town" /></td> </tr> <tr> <td class="cellHeader">'
+			.'County</td> <td colspan="1"> <input class="text" id="Billing_County"'
+			.' name="Billing_County" /></td> </tr> <tr> <td class="cellHeader">'
+			.'Country</td> <td colspan="1"> <div class="countries-list">'
+			.'{{ONLINESTORE_COUNTRIES prefix=&quot;Billing_&quot;}}</div> </td>'
+			.'</tr> </tbody> </table> </div> </td> </tr> </tbody> </table>',
+		'page_vars[online_stores_fields]'=>'{"FirstName":{"required":"required",'
+			.'"show":1},"Surname":{"required":"required","show":1},'
+			.'"Phone":{"required":"required","show":1},'
+			.'"Email":{"required":"required","show":1},"Street":{"show":1},'
+			.'"Street2":{"show":1},"Town":{"show":1},"County":{"show":1},'
+			.'"BillingAddressIsDifferentToDelivery":{"show":1},'
+			.'"Billing_FirstName":{"show":1},"Billing_Surname":{"show":1},'
+			.'"Billing_Phone":{"show":1},"Billing_Email":{"show":1},'
+			.'"Billing_Street":{"show":1},"Billing_Street2":{"show":1},'
+			.'"Billing_Town":{"show":1},"Billing_County":{"show":1}}',
+		'page_vars[online-store-countries][Ireland]'=>'on',
+		'page_vars[online_stores_exportdir]'=>'',
+		'page_vars[online_stores_exportcustomers]'=>'',
+		'page_vars[online_stores_exportcustomer_filename]'=>'',
+		'title'=>'',
+		'keywords'=>'',
+		'description'=>'',
+		'short_url'=>'',
+		'importance'=>'0.5',
+		'page_vars[google-site-verification]'=>'',
+		'date_publish'=>'0000-00-00 00:00:00',
+		'date_unpublish'=>'0000-00-00 00:00:00',
+		'associated_date'=>'2012-08-26 21:41:38',
+		'page_vars[order_of_sub_pages]'=>0,
+		'page_vars[order_of_sub_pages_dir]'=>0,
+		'template'=>'_default',
+		'action'=>'Update Page Details'
+	) // }
+);
+$expected='option value="2" selected="selected"';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+exit;
 // { delete it, to try using the wizard
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
@@ -223,6 +515,17 @@ if ($file!='{"ok":1}') {
 }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
+// { remove product type
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=1');
+$expected='true';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could not delete product type.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
+// }
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 	array('plugins[panels]'=>'on')
@@ -236,6 +539,12 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+// }
+// { remove widget from sidebar
+$file=Curl_get(
+	'http://kvwebmerun/ww.plugins/panels/admin/remove-panel.php?id=1',
+	array()
+);
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

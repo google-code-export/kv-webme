@@ -1,127 +1,39 @@
 $(function(){
-	function teardown() {
-		addRow('Teardown previous tests');
-		$.post('/p/teardown.php?rand='+Math.random(), function(ret) {
+	var test1=[ // { tests that /must/ go at the beginning
+		['Teardown previous tests', 'teardown'],
+		['Copy Site', 'copy-site'],
+		['Installer', 'test-installer'],
+		['Admin Login', 'test-admin-login']
+	]; // }
+	var test2=[ // { put these in whatever order you want
+		['OnlineStore plugin', 'test-online-store'],
+		['Messaging Notifier', 'test-messaging-notifier'],
+		['Products plugin', 'test-products'],
+		['Mailinglists plugin', 'test-mailinglists'],
+		['Plugin Installation and Deinstallation', 'test-plugin-install-deinstall'],
+		['Page Creation', 'test-page-creation'],
+		['Non-latin page names', 'test-page-non-latin'],
+		['Page-type: Redirect', 'test-page-redirect'],
+		['User Management', 'test-user-management'],
+		['User Authentication plugin', 'test-privacy'],
+		['Page Editing', 'test-page-editing'],
+		['ImageGallery plugin', 'test-image-gallery'],
+		['Forms plugin', 'test-forms'],
+		['Quiz plugin', 'test-quiz'],
+	]; // }
+	var test3=[ // { tests that /must/ go at the end
+		['Check Code Formatting', 'check-code-formatting'],
+		['Check Code Coverage', 'check-code-coverage']
+	]; // }
+	var testAt=0, tests=[];
+	function runTest() {
+		addRow(tests[testAt][0]);
+		$.post('/p/'+tests[testAt][1]+'.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
-			testCopySite();
-		}, 'json');
-	}
-	function testCopySite() {
-		addRow('Copy Site');
-		$.post('p/copy-site.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			testInstaller();
-		}, 'json');
-	}
-	function testInstaller() {
-		addRow('Installer');
-		$.post('p/test-installer.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testAdminLogin();
-		}, 'json');
-	}
-	function testAdminLogin() {
-		addRow('Admin Login');
-		$.post('p/test-admin-login.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPluginInstallDeinstall();
-		}, 'json');
-	}
-	function testPluginInstallDeinstall() {
-		addRow('Plugin Installation and Deinstallation');
-		$.post('p/test-plugin-install-deinstall.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPageCreation();
-		}, 'json');
-	}
-	function testPageCreation() {
-		addRow('Page Creation');
-		$.post('p/test-page-creation.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPageNonLatin();
-		}, 'json');
-	}
-	function testPageNonLatin() {
-		addRow('Non-latin page names');
-		$.post('p/test-page-non-latin.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPageRedirect();
-		}, 'json');
-	}
-	function testPageRedirect() {
-		addRow('Page-type: Redirect');
-		$.post('p/test-page-redirect.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testUserManagement();
-		}, 'json');
-	}
-	function testUserManagement() {
-		addRow('User Management');
-		$.post('p/test-user-management.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPrivacy();
-		}, 'json');
-	}
-	function testPrivacy() {
-		addRow('User Authentication plugin');
-		$.post('p/test-privacy.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testPageEditing();
-		}, 'json');
-	}
-	function testPageEditing() {
-		addRow('Page Editing');
-		$.post('p/test-page-editing.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testProducts();
-		}, 'json');
-	}
-	function testProducts() {
-		addRow('Products plugin');
-		$.post('p/test-products.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testOnlineStore();
-		}, 'json');
-	}
-	function testOnlineStore() {
-		addRow('OnlineStore plugin');
-		$.post('p/test-online-store.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testImageGallery();
-		}, 'json');
-	}
-	function testImageGallery() {
-		addRow('ImageGallery plugin');
-		$.post('p/test-image-gallery.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testForms();
-		}, 'json');
-	}
-	function testForms() {
-		addRow('Forms plugin');
-		$.post('p/test-forms.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testQuiz();
-		}, 'json');
-	}
-	function testQuiz() {
-		addRow('Quiz plugin');
-		$.post('p/test-quiz.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testCodeFormatting();
-		}, 'json');
-	}
-	function testCodeFormatting() {
-		addRow('Check Code Formatting');
-		$.post('p/check-code-formatting.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
-			ret.ok && testCodeCoverage();
-		}, 'json');
-	}
-	function testCodeCoverage() {
-		addRow('Check Code Coverage');
-		$.post('p/check-code-coverage.php?rand='+Math.random(), function(ret) {
-			timerStop(ret);
+			testAt++;
+			if (testAt<tests.length && ret.ok) {
+				runTest();
+			}
 		}, 'json');
 	}
 
@@ -142,7 +54,16 @@ $(function(){
 			+'<th>Errors</th><th>Notes</th></tr>'
 			+'</table>')
 			.appendTo($('body').empty());
-		teardown();
+		for (var i=0;i<test1.length;++i) {
+			tests.push(test1[i]);
+		}
+		for (var i=0;i<test2.length;++i) {
+			tests.push(test2[i]);
+		}
+		for (var i=0;i<test3.length;++i) {
+			tests.push(test3[i]);
+		}
+		runTest();
 	}
 	function timerStart() {
 		var d=new Date();

@@ -49,7 +49,9 @@ if (!$file || strpos($file, 'document.location="/install/step2.php";')===false) 
 // }
 // { check that database installs
 $file=Curl_get('http://kvwebmerun/install/step2.php');
-if (!$file || strpos($file, 'document.location="/install/step3.php";')===false) {
+if (!$file
+	|| strpos($file, 'document.location="/install/step3.php";')===false
+) {
 	die('{"errors":"failed when installing database"}');
 }
 // }

@@ -69,6 +69,16 @@ if (strpos($file, '<div class="products-pagination">')===false) {
 	die('{"errors":"failed to add Products page"}');
 }
 // }
+// { load up the products page admin
+$file=Curl_get('http://kvwebmerun/ww.admin/pages/form.php?id=2');
+$expected='products_what_to_show_1';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not load product admin page.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
 // { load products edit page
 $file=Curl_get(
 	'http://kvwebmerun/ww.admin/plugin.php?_plugin=products&_page=products-edit',
@@ -83,7 +93,7 @@ $file=Curl_get('http://kvwebmerun/a/p=products/f=typesGet');
 $expected='{"sEcho":0,"iTotalRecords":0,"iTotalDisplayRecords":0,"aaData":[]}';
 if ($file!=$expected) {
 	die(json_encode(array(
-		'errors'=>'could note check list of types.<br/>expected:<br/>'
+		'errors'=>'could not check list of types.<br/>expected:<br/>'
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
@@ -93,7 +103,7 @@ $file=Curl_get('http://kvwebmerun/a/p=products/f=typesTemplatesGet');
 $expected='["default"]';
 if ($file!=$expected) {
 	die(json_encode(array(
-		'errors'=>'could note check list of type templates.<br/>expected:<br/>'
+		'errors'=>'could not check list of type templates.<br/>expected:<br/>'
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
@@ -103,7 +113,7 @@ $file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeCopy/id=default');
 $expected='{"id":1}';
 if ($file!=$expected) {
 	die(json_encode(array(
-		'errors'=>'could note create product type.<br/>expected:<br/>'
+		'errors'=>'could not create product type.<br/>expected:<br/>'
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
