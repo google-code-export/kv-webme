@@ -11,6 +11,8 @@ $file=Curl_get('http://kvwebmerun/ww.admin/', array());
 if (strpos($file, '<!-- end of admin -->')===false) {
 	die('{"errors":"failed to load admin page /ww.admin/ after logging in"}');
 }
+$file=Curl_get('http://kvwebmerun/home', array()); // reset panels
+// }
 // }
 // { add MessagingNotifier plugin using InstallOne method
 $file=Curl_get(
@@ -43,7 +45,7 @@ if ($expected!=$file) {
 // }
 // { add widget to sidebar
 $file=Curl_get(
-	'http://kvwebmerun/a/p=panels/f=adminSave/id=1',
+	'http://kvwebmerun/a/p=panels/f=adminSave/id=3',
 	array(
 		'data'=>'{"widgets":[{"type":"messaging-notifier","name":"Feed Reader",'
 		.'"panel":""}]}'
@@ -62,12 +64,12 @@ if (strpos($file, $expected)===false) {
 // { check front-end
 $file=Curl_get('http://kvwebmerun/home', array());
 if (strpos($file, 'panel-widget-messaging-notifier')===false) {
-	die('{"errors":"failed to add OnlineStore page"}');
+	die('{"errors":"failed to add messaging notifier widget"}');
 }
 // }
 // { remove widget from sidebar
 $file=Curl_get(
-	'http://kvwebmerun/ww.plugins/panels/admin/remove-panel.php?id=1',
+	'http://kvwebmerun/ww.plugins/panels/admin/remove-panel.php?id=3',
 	array()
 );
 // }

@@ -97,7 +97,9 @@ function testCoverageDirectory($dir) {
 				'phpqrcode.php',
 				'TreeBuilder.php',
 				'AmazonProductAPI.php',
-				'class.pdf.php'
+				'class.pdf.php',
+				'upgrade.php',
+				'convert-wordpress.php'
 			))) {
 				continue;
 			}

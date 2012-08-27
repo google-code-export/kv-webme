@@ -64,6 +64,15 @@ if ($file!=$expected) {
 	)));
 }
 // }
+// { load edit page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/pages/form.php?id=2',
+	array()
+);
+if (strpos($file, 'These are fields that')===false) {
+	die('{"errors":"failed to load Privacy edit page"}');
+}
+// }
 // { load the page to see that it worked
 $file=Curl_get('http://kvwebmerun/privacy', array());
 if (strpos($file, 'User Details')===false) {

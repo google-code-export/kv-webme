@@ -371,13 +371,27 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
-exit;
-// { delete it, to try using the wizard
+// { check the list of countries (should be just Ireland)
+$file=Curl_get(
+	'http://kvwebmerun/a/p=online-store/f=getCountries/page_id=2'
+);
+$expected='["Ireland"]';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { clean up, to try using the wizard
+// { remove page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
 	die('{"errors":"failed to delete online store page (1)"}');
 }
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+// }
 // }
 // { test the wizard
 // { wizard opening page
@@ -501,21 +515,22 @@ $file=Curl_get(
 	'http://kvwebmerun/ww.admin/pages/form.php?id=3',
 	array()
 );
-if (strpos($file, '{{ONLINESTORE_COUNTRIES}}')===false) {
+if (strpos($file, 'value="0" selected="selected">All products')===false) {
 	die('{"errors":"failed to load OnlineStore edit page (after Wizard)"}');
 }
 // }
-$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
-if ($file!='{"ok":1}') {
-	die('{"errors":"failed to delete product page"}');
-}
+// }
+// { remove pages
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=3');
-if ($file!='{"ok":1}') {
-	die('{"errors":"failed to delete online store page (2)"}');
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=4');
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=5');
+$file=Curl_get('http://kvwebmerun/a/f=adminPageChildnodes?id=0');
+if ($file!='[{"data":"Home","attr":{"id":"page_1"},"children":false}]') {
+	die('{"errors":"failed to list pages after deleting test pages"}');
 }
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 // }
 // { remove product type
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=2');
 $file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=1');
 $expected='true';
 if ($file!=$expected) {
@@ -524,7 +539,6 @@ if ($file!=$expected) {
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
 }
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
 // }
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
@@ -546,6 +560,9 @@ $file=Curl_get(
 	array()
 );
 // }
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=panels');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
