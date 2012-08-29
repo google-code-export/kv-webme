@@ -123,6 +123,17 @@ if (!$file || strpos($file, 'document.location="/install/step6.php"')===false) {
 	die('{"errors":"could not install config.php file"}');
 }
 // }
+// { add "testmode" flag to config file
+$f=file_get_contents('../../run/trunk/.private/config.php');
+file_put_contents(
+	'../../run/trunk/.private/config.php',
+	str_replace(
+		"'username' => 'root',",
+		"'username'=>'root','testmode'=>true,",
+		$f
+	)
+);
+// }
 // { add code coverage to htaccess
 @mkdir($userbase.'/xdebug', 0777);
 file_put_contents($userbase.'/xdebug/coverage', '');

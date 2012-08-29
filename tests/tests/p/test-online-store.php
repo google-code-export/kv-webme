@@ -241,7 +241,7 @@ if ($file!=$expected) {
 	)));
 }
 // }
-// { set online-store page to use 5-step method
+// { set online-store page to use 5-step method and paypal
 $file=Curl_get(
 	'http://kvwebmerun/ww.admin/pages/form.php',
 	array( // { vals
@@ -254,7 +254,7 @@ $file=Curl_get(
 		'online_store_currency'=>'EUR',
 		'page_vars[online_stores_vat_percent]'=>0,
 		'page_vars[online_stores_customers_usergroup]'=>'customers',
-		'page_vars[online_stores_paypal_address]'=>'',
+		'page_vars[online_stores_paypal_address]'=>'kvwebmeAdmin@kvsites.ie',
 		'page_vars[online_stores_bank_transfer_bank_name]'=>'',
 		'page_vars[online_stores_bank_transfer_sort_code]'=>'',
 		'page_vars[online_stores_bank_transfer_account_name]'=>'',
@@ -384,6 +384,66 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+// }
+// { submit the order
+$file=Curl_get(
+	'http://kvwebmerun/online-store',
+	array(
+		'Billing_Country'=>'Ireland',
+		'Billing_County'=>'county1',
+		'Billing_Email'=>'kvwebmeUser@kvsites.ie',
+		'Billing_FirstName'=>'kae',
+		'Billing_Phone'=>'2341234',
+		'Billing_Postcode'=>'postcode1',
+		'Billing_Street'=>'street1',
+		'Billing_Street2'=>'street2',
+		'Billing_Surname'=>'verens',
+		'Billing_Town'=>'town1',
+		'Country'=>'Ireland',
+		'County'=>'Dcounty1',
+		'Email'=>'DkvwebmeUser@kvsites.ie',
+		'FirstName'=>'Dkae',
+		'Phone'=>'D2341234',
+		'Postcode'=>'Dpostcode1',
+		'Street'=>'Dstreet1',
+		'Street2'=>'Dstreet2',
+		'Surname'=>'Dverens',
+		'Town'=>'Dtown1',
+		'_payment_method_type'=>'PayPal',
+		'os_voucher'=>'',
+		'os_pandp'=>'0',
+		'action'=>'Proceed to Payment'
+	)
+);
+$expected='go to PayPal for payment';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { empty the user's email account
+Email_empty('user');
+// }
+// { mark this order as Paid
+$file=Curl_get(
+	'http://kvwebmerun/a/p=online-store/f=adminChangeOrderStatus/id=1/status=1'
+);
+$expected='{"ok":1}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { check that the invoice arrived
+$email=Email_getOne('user');
 // }
 // { clean up, to try using the wizard
 // { remove page

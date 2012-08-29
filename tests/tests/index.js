@@ -6,8 +6,8 @@ $(function(){
 		['Admin Login', 'test-admin-login']
 	]; // }
 	var test2=[ // { put these in whatever order you want
-		['Privacy plugin', 'test-privacy'],
 		['OnlineStore plugin', 'test-online-store'],
+		['Privacy plugin', 'test-privacy'],
 		['Messaging Notifier', 'test-messaging-notifier'],
 		['Products plugin', 'test-products'],
 		['Mailinglists plugin', 'test-mailinglists'],

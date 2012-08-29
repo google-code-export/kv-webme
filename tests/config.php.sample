@@ -13,3 +13,13 @@ $dbname='kvwebmetest'; // create this if it doesn't exist!
 	* address of the webserver set up for running the test WebME instance in
 	*/
 $test_env_uri='http://kvwebmerun/';
+$run_dir=realpath(dirname(__FILE__).'/run');
+
+// { email settings
+$emailAdminServer   = 'localhost';
+$emailAdminUsername = 'admin@kvwebme.test';
+$emailAdminPassword = 'password';
+$emailUserServer    = 'localhost';
+$emailUserUsername  = 'user@kvwebme.test';
+$emailUserPassword  = 'password';
+// }
