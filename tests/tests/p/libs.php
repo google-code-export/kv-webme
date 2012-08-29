@@ -1,6 +1,6 @@
 <?php
+header('Content-type: application/json; charset=utf-8');
 function Curl_get($url, $post=array(), $output=false) {
-//	$fname='../../run/files/curl_cookies.txt';
 	$fname='/tmp/kvwebmecookie.txt';
 	$ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_COOKIEJAR, $fname);
@@ -55,6 +55,7 @@ function Email_getOne($user) {
 	}
 	return array(
 		'header'=>imap_headerinfo($mbox, 1),
+		'header_unfiltered'=>imap_fetchheader($mbox, 1),
 		'body'=>imap_body($mbox, 1)
 	);
 }

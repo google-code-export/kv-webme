@@ -444,6 +444,19 @@ if (strpos($file, $expected)===false) {
 // }
 // { check that the invoice arrived
 $email=Email_getOne('user');
+$expected='Dstreet1';
+if (strpos($email['body'], $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'failed to send invoice<br/>expected: '.$expected.'<br/>actual: '
+				.$json_encode($email)
+		))
+	);
+}
+// }
+// { empty the user's email account again
+Email_empty('user');
 // }
 // { clean up, to try using the wizard
 // { remove page
