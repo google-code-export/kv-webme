@@ -32,4 +32,4 @@ if (file_exists($run_dir.'/xdebug')) {
 @unlink($run_dir.'/.htaccess');
 @unlink('/tmp/kvwebmecookie.txt');
 `echo "drop database kvwebmetest; create database kvwebmetest;" | mysql -uroot`;
-echo '{"ok":1,"notes":"actual time may vary"}';
+echo '{"ok":1,"notes":""}';

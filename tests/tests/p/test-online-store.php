@@ -425,6 +425,7 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
+// { test that setting an invoice as Paid sends the invoice as an email
 // { empty the user's email account
 Email_empty('user');
 // }
@@ -450,13 +451,39 @@ if (strpos($email['body'], $expected)===false) {
 		json_encode(array(
 			'errors'=>
 				'failed to send invoice<br/>expected: '.$expected.'<br/>actual: '
-				.$json_encode($email)
+				.json_encode($email)
 		))
 	);
 }
 // }
 // { empty the user's email account again
 Email_empty('user');
+// }
+// }
+// { test again, but this time setting invoices not to be emailed
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=online-store&_page=site-options',
+	array( // { vals
+		'online_store_vars[vat_display]'=>0,
+		'online_store_vars[invoices_by_email]'=>1,
+		'os-currencies_name[]'=>'Euro',
+		'os-currencies_iso[]'=>'Eur',
+		'os-currencies_symbol[]'=>'€',
+		'os-currencies_value[]'=>1,
+		'discounts[1]'=>0,
+		'discounts[20]'=>0,
+		'action'=>'Save'
+	) // }
+);
+$expected='Saved';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
 // }
 // { clean up, to try using the wizard
 // { remove page

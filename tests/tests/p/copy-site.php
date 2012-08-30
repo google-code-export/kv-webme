@@ -35,4 +35,4 @@ $run_dir=realpath('../../run');
 `rsync ../../../trunk $run_dir/ -ra --exclude '*svn*' --exclude 'ww.plugins/_*'`;
 unlink($run_dir.'/trunk/.private/config.php');
 chmod_R($run_dir.'/trunk', 0744, 0755);
-echo '{"ok":1,"notes":"actual time may vary"}';
+echo '{"ok":1,"notes":""}';
