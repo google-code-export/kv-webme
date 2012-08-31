@@ -13,7 +13,6 @@ if (strpos($file, '<!-- end of admin -->')===false) {
 }
 $file=Curl_get('http://kvwebmerun/home', array()); // reset panels
 // }
-// }
 // { add MessagingNotifier plugin using InstallOne method
 $file=Curl_get(
 	'http://kvwebmerun/a/f=adminPluginsInstallOne/name=messaging-notifier'
@@ -45,7 +44,7 @@ if ($expected!=$file) {
 // }
 // { add widget to sidebar
 $file=Curl_get(
-	'http://kvwebmerun/a/p=panels/f=adminSave/id=3',
+	'http://kvwebmerun/a/p=panels/f=adminSave/id=2',
 	array(
 		'data'=>'{"widgets":[{"type":"messaging-notifier","name":"Feed Reader",'
 		.'"panel":""}]}'
@@ -73,6 +72,7 @@ $file=Curl_get(
 	array()
 );
 // }
+// { cleanup
 // { remove plugins
 $file=Curl_get(
 	'http://kvwebmerun/a/f=adminPluginsSetInstalled',
@@ -87,6 +87,8 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+// }
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=panels');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

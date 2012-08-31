@@ -121,7 +121,7 @@ if ($file!=$expected) {
 // { cleanup
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
-	die('{"errors":"failed to delete redirect page"}');
+	die('{"errors":"failed to delete product page"}');
 }
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
