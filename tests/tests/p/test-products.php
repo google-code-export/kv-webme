@@ -40,7 +40,7 @@ if (strpos($file, $expected)===false) {
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5},"products":{"name"'
-	.':"Products","description":"Product catalogue.","version":"44"}}';
+	.':"Products","description":"Product catalogue.","version":"45"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -118,11 +118,107 @@ if ($file!=$expected) {
 	)));
 }
 // }
+// { add a product to test
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=products&_page=products-edit',
+	array(
+		'id'=>0,
+		'action'=>'save',
+		'name'=>'{"en":"product1"}',
+		'product_type_id'=>1,
+		'activates_on'=>'2012-01-01 00:00:00',
+		'expires_on'=>'2100-01-01 00:00:00',
+		'stock_number'=>'',
+		'enabled'=>1,
+		'user_id'=>1,
+		'ean'=>'',
+		'location'=>0,
+		'images_directory'=>'',
+		'products_default_category'=>0
+	)
+);
+$expected='expires_on" value="2100-01-01 00:00:00"';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { set the product type so it has bells and whistles
+$file=Curl_get(
+	'http://kvwebmerun/a/p=products/f=adminTypeEdit',
+	array(
+		'data[id]'=>1,
+		'data[name]'=>'default (copy)',
+		'data[multiview_template]'=>'{{PRODUCTS_CATEGORIES}} {{PRODUCTS_DATATABLE}}'
+			.' {{PRODUCTS_EXPIRY_CLOCK}} {{PRODUCTS_IMAGE}}'
+			.' {{PRODUCTS_IMAGES}} {{PRODUCTS_IMAGES_SLIDER}} {{PRODUCTS_LINK}}'
+			.' {{PRODUCTS_LIST_CATEGORIES}} {{PRODUCTS_LIST_CATEGORY_CONTENTS}}'
+			.' {{PRODUCTS_MAP}} {{PRODUCTS_OWNER}} {{PRODUCTS_QRCODE}}'
+			.' {{PRODUCTS_RELATED}} {{PRODUCTS_REVIEWS}}',
+		'data[singleview_template]'=>'',
+		'data[data_fields][0][n]'=>'description',
+		'data[data_fields][0][ti]'=>'Description',
+		'data[data_fields][0][t]'=>'textarea',
+		'data[data_fields][0][s]'=>0,
+		'data[data_fields][0][r]'=>0,
+		'data[data_fields][0][u]'=>0,
+		'data[data_fields][0][e]'=>'',
+		'data[is_for_sale]'=>1,
+		'data[prices_based_on_usergroup]'=>0,
+		'data[associated_colour]'=>'ffffff',
+		'data[multiview_template_header]'=>'',
+		'data[multiview_template_footer]'=>'',
+		'data[meta]'=>'',
+		'data[is_voucher]'=>0,
+		'data[voucher_template]'=>0,
+		'data[stock_control]'=>0,
+		'data[default_category]'=>0,
+		'data[default_category_name]'=>false
+	)
+);
+$expected='{"ok":1}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { load the page to see that it worked
+$file=Curl_get('http://kvwebmerun/products', array());
+if (strpos($file, 'Nobody has reviewed')===false) {
+	die('{"errors":"failed to add Products page"}');
+}
+// }
 // { cleanup
+// { remove page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
 	die('{"errors":"failed to delete product page"}');
 }
+// }
+// { remove product
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminProductDelete/id=1');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete product"}');
+}
+// }
+// { remove product type
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=1');
+$expected='true';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'could not delete product type.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 	array('plugins[panels]'=>'on')
@@ -138,6 +234,8 @@ if (strpos($file, $expected)===false) {
 }
 // }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
 // }
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());

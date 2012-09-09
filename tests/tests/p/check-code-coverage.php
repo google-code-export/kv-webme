@@ -76,7 +76,8 @@ function testCoverageDirectory($dir) {
 				'themes-api',
 				'Smarty-2.6.26',
 				'recaptcha-php-1.11',
-				'ckeditor-3.6.2'
+				'ckeditor-3.6.2',
+				'ww.external'
 			))) {
 				continue;
 			}

@@ -109,7 +109,7 @@ $expected='{"backup":{"name":"Backup","description":"backup your website, o'
 	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5},"products":{"name":"Products","description":"Product'
-	.' catalogue.","version":"44"}}';
+	.' catalogue.","version":"45"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(

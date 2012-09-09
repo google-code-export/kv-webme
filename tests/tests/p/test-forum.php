@@ -64,6 +64,26 @@ if ($file!=$expected) {
 	)));
 }
 // }
+// { load up the forum page admin
+$file=Curl_get('http://kvwebmerun/ww.admin/pages/form.php?id=2');
+$expected='administrators';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not load forum admin page.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { check the front page
+$file=Curl_get('http://kvwebmerun/forum');
+$expected='forum has no threads';
+if (strpos($file, $expected)===false) {
+	die(json_encode(array(
+		'errors'=>'could not load forum admin page.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
 // { cleanup
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',

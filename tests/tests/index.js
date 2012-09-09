@@ -6,22 +6,23 @@ $(function(){
 		['Admin Login', 'test-admin-login']
 	]; // }
 	var test2=[ // { put these in whatever order you want
-		['Forum', 'test-forum'],
-		['Forms plugin', 'test-forms'],
-		['ImageGallery plugin', 'test-image-gallery'],
-		['Issue Tracker', 'test-issue-tracker'],
-		['Messaging Notifier', 'test-messaging-notifier'],
-		['Mailinglists plugin', 'test-mailinglists'],
+		['plugin: Products', 'test-products'],
 		['Non-latin page names', 'test-page-non-latin'],
-		['OnlineStore plugin', 'test-online-store'],
 		['Page Creation', 'test-page-creation'],
 		['Page Editing', 'test-page-editing'],
 		['Page-type: Redirect', 'test-page-redirect'],
 		['Plugin Installation and Deinstallation', 'test-plugin-install-deinstall'],
-		['Privacy plugin', 'test-privacy'],
-		['Products plugin', 'test-products'],
-		['Quiz plugin', 'test-quiz'],
 		['User Management', 'test-user-management'],
+		['plugin: Forms', 'test-forms'],
+		['plugin: Forum', 'test-forum'],
+		['plugin: Image Gallery', 'test-image-gallery'],
+		['plugin: Issue Tracker', 'test-issue-tracker'],
+		['plugin: Messaging Notifier', 'test-messaging-notifier'],
+		['plugin: Mailinglists', 'test-mailinglists'],
+		['plugin: Online Store', 'test-online-store'],
+		['plugin: Privacy', 'test-privacy'],
+		['plugin: Quiz', 'test-quiz'],
+		['plugin: Site Credits', 'test-site-credits']
 	]; // }
 	var test3=[ // { tests that /must/ go at the end
 		['Check Code Formatting', 'check-code-formatting'],

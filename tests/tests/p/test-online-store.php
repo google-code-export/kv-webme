@@ -629,6 +629,12 @@ if ($file!='[{"data":"Home","attr":{"id":"page_1"},"children":false}]') {
 	die('{"errors":"failed to list pages after deleting test pages"}');
 }
 // }
+// { remove product
+$file=Curl_get('http://kvwebmerun/a/p=products/f=adminProductDelete/id=1');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete product"}');
+}
+// }
 // { remove product type
 $file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=2');
 $file=Curl_get('http://kvwebmerun/a/p=products/f=adminTypeDelete/id=1');
@@ -662,7 +668,10 @@ $file=Curl_get(
 // }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=panels');
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products');
+Curl_get(
+	'http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types'
+);
 // { logout
 $file=Curl_get('http://kvwebmerun/a/f=logout', array());
 $file=Curl_get('http://kvwebmerun/ww.admin/', array());
