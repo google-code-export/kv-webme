@@ -79,6 +79,42 @@ if (strpos($file, 'no images yet. please upload some')===false) {
 	die('{"errors":"failed to load Image Gallery edit page"}');
 }
 // }
+// { check via API what's in the gallery
+$file=Curl_get('http://kvwebmerun/a/p=image-gallery/f=galleryGet/id=2');
+$expected='"items":[],"caption-in-slider":0,"image-width":0';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'problem checking gallery via API<br/>expected: '
+				.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { add a youtube video
+$file=Curl_get(
+	'http://kvwebmerun/a/p=image-gallery/f=adminAddVideo',
+	array(
+		'link'=>'http://www.youtube.com/watch?v=QHELOP82b04',
+		'id'=>2,
+		'image'=>'http://'
+	)
+);
+// }
+// { check via API what's in the gallery
+$file=Curl_get('http://kvwebmerun/a/p=image-gallery/f=galleryGet/id=2');
+$expected='"items":[{"id":"1","media":"video","url":"\\/a\\/f=getIm';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'problem checking gallery via API<br/>expected: '
+				.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
 // { cleanup
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
 if ($file!='{"ok":1}') {
