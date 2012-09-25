@@ -43,7 +43,7 @@ $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content'
 	.' sections to be displayed throughout the site.","version":5},'
 	.'"mailinglists":{"name":"Mailing Lists","description":"Mailing lists",'
-	.'"version":"2"}}';
+	.'"version":"4"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
