@@ -74,7 +74,7 @@ function testCoverageDirectory($dir) {
 				'kfm',
 				'Minify',
 				'themes-api',
-				'Smarty-2.6.26',
+				'Smarty-3.1.12',
 				'recaptcha-php-1.11',
 				'ckeditor-3.6.2',
 				'ww.external'

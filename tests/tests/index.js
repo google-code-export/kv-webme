@@ -6,7 +6,6 @@ $(function(){
 		['Admin Login', 'test-admin-login']
 	]; // }
 	var test2=[ // { put these in whatever order you want
-		['plugin: Products', 'test-products'],
 		['Non-latin page names', 'test-page-non-latin'],
 		['Page Creation', 'test-page-creation'],
 		['Page Editing', 'test-page-editing'],
@@ -21,6 +20,7 @@ $(function(){
 		['plugin: Mailinglists', 'test-mailinglists'],
 		['plugin: Online Store', 'test-online-store'],
 		['plugin: Privacy', 'test-privacy'],
+		['plugin: Products', 'test-products'],
 		['plugin: Quiz', 'test-quiz'],
 		['plugin: Site Credits', 'test-site-credits']
 	]; // }
