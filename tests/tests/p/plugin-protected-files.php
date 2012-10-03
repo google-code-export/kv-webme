@@ -16,7 +16,7 @@ if (strpos($file, '<!-- end of admin -->')===false) {
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled', array());
 $expected='{"panels":{"name":"Panels","description":"Allows content sections'
 	.' to be displayed throughout the site.","version":5}}';
-if ($expected!=$file) {
+if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
 			'errors'=>'expected: '.$expected.'<br/>actual: '.$file
@@ -24,9 +24,11 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add plugin using InstallOne method (should fail)
-$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=sms');
-$expected='{"ok":1,"added":["sms"],"removed":[]}';
+// { add plugin
+$file=Curl_get(
+	'http://kvwebmerun/a/f=adminPluginsInstallOne/name=protected-files'
+);
+$expected='{"ok":1,"added":["protected-files"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -39,9 +41,9 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
-	.'s to be displayed throughout the site.","version":5},"sms":{"name":"SMS'
-	.'","description":"Add SMS capabilities to your site, using the textr.mob'
-	.'i service.","version":1}}';
+	.'s to be displayed throughout the site.","version":5},"protected-files":'
+	.'{"name":"protected files","description":"Protect files by requiring eit'
+	.'her a login or an email address.","version":6}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -50,14 +52,16 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { get list of addressbooks
-$file=Curl_get('http://kvwebmerun/a/p=sms/f=adminAddressbooksGet');
-$expected='{"subscribers":null}';
+// { load admin page
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=protected-files&_page=index',
+	array()
+);
+$expected='New Protected File';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
-			'errors'=>
-				'expected: '.$expected.'<br/>actual: '.$file
+			'errors'=>'expected: '.$expected.'<br/>actual: '.$file
 		))
 	);
 }
@@ -67,7 +71,7 @@ if (strpos($file, $expected)===false) {
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 	array('plugins[panels]'=>'on')
 );
-$expected='{"ok":1,"added":[],"removed":["sms"]}';
+$expected='{"ok":1,"added":[],"removed":["protected-files"]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(

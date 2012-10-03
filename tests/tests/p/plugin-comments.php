@@ -24,9 +24,9 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add plugin using InstallOne method (should fail)
-$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=sms');
-$expected='{"ok":1,"added":["sms"],"removed":[]}';
+// { add plugin
+$file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=comments');
+$expected='{"ok":1,"added":["comments"],"removed":[]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -39,9 +39,9 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
-	.'s to be displayed throughout the site.","version":5},"sms":{"name":"SMS'
-	.'","description":"Add SMS capabilities to your site, using the textr.mob'
-	.'i service.","version":1}}';
+	.'s to be displayed throughout the site.","version":5},"comments":{"name"'
+	.':"Comments","description":"Allow visitors to comment on pages on your s'
+	.'ite","version":3}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -50,9 +50,34 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { get list of addressbooks
-$file=Curl_get('http://kvwebmerun/a/p=sms/f=adminAddressbooksGet');
-$expected='{"subscribers":null}';
+// { add a page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
+	'parent'=>0,
+	'name'  =>'comments',
+	'type'  =>0
+));
+$expected='{"id":"2","pid":0,"alias":"comments"}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'page not created.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { add comments to the page
+$file=Curl_get('http://kvwebmerun/ww.admin/pages/form.php', array(
+	'id'=>2,
+	'parent'=>0,
+	'name'  =>'comments',
+	'type'  =>0,
+	'body[en]'=>'<h1>Comments</h1>testing comments',
+	'page_vars[allow_comments]'=>'on',
+	'action'=>'Update Page Details'
+));
+// }
+// { check the frontend
+$file=Curl_get('http://kvwebmerun/comments');
+$expected='Add Comment';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -67,7 +92,7 @@ if (strpos($file, $expected)===false) {
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
 	array('plugins[panels]'=>'on')
 );
-$expected='{"ok":1,"added":[],"removed":["sms"]}';
+$expected='{"ok":1,"added":[],"removed":["comments"]}';
 if (strpos($file, $expected)===false) {
 	die(
 		json_encode(array(
@@ -75,6 +100,12 @@ if (strpos($file, $expected)===false) {
 				'expected: '.$expected.'<br/>actual: '.$file
 		))
 	);
+}
+// }
+// { remove page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete page"}');
 }
 // }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');

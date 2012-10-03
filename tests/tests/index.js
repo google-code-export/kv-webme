@@ -2,29 +2,34 @@ $(function(){
 	var test1=[ // { tests that /must/ go at the beginning
 		['Teardown previous tests', 'teardown'],
 		['Copy Site', 'copy-site'],
-		['Installer', 'test-installer'],
-		['Admin Login', 'test-admin-login']
+		['Installer', 'test-installer']
 	]; // }
 	var test2=[ // { put these in whatever order you want
+		['plugin: Quiz', 'plugin-quiz'],
+		['Convert FreeCssTemplates Theme', 'convert-freecsstemplate-theme'],
 		['Non-latin page names', 'test-page-non-latin'],
 		['Page Creation', 'test-page-creation'],
 		['Page Editing', 'test-page-editing'],
 		['Page-type: Redirect', 'test-page-redirect'],
 		['Plugin Installation and Deinstallation', 'test-plugin-install-deinstall'],
 		['User Management', 'test-user-management'],
+		['plugin: Ads', 'plugin-ads'],
+		['plugin: Banner Image', 'plugin-banner-image'],
 		['plugin: Blog', 'plugin-blog'],
+		['plugin: Comments', 'plugin-comments'],
 		['plugin: Forms', 'test-forms'],
 		['plugin: Forum', 'test-forum'],
 		['plugin: Image Gallery', 'test-image-gallery'],
 		['plugin: Issue Tracker', 'test-issue-tracker'],
 		['plugin: Messaging Notifier', 'test-messaging-notifier'],
-		['plugin: Mailinglists', 'test-mailinglists'],
-		['plugin: Online Store', 'test-online-store'],
+		['plugin: Mailinglists', 'plugin-mailinglists'],
+		['plugin: Online Store', 'plugin-online-store'],
 		['plugin: Privacy', 'test-privacy'],
 		['plugin: Products', 'test-products'],
-		['plugin: Quiz', 'test-quiz'],
+		['plugin: Protected Files', 'plugin-protected-files'],
 		['plugin: Site Credits', 'test-site-credits'],
-		['plugin: SMS', 'plugin-sms']
+		['plugin: SMS', 'plugin-sms'],
+		['Admin Login', 'test-admin-login']
 	]; // }
 	var test3=[ // { tests that /must/ go at the end
 		['Check Code Formatting', 'check-code-formatting'],

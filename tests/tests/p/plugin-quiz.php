@@ -50,6 +50,7 @@ if ($expected!=$file) {
 	);
 }
 // }
+// { test admin area
 // { load quiz admin page
 $file=Curl_get('http://kvwebmerun/ww.admin/plugin.php?_plugin=quiz&_page=index');
 $expected='New Quiz';
@@ -151,6 +152,43 @@ if (strpos($file, $expected)===false) {
 	)));
 }
 // }
+// { add a page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageEdit', array(
+	'parent'=>0,
+	'name'  =>'quiz',
+	'type'  =>0
+));
+$expected='{"id":"2","pid":0,"alias":"quiz"}';
+if ($file!=$expected) {
+	die(json_encode(array(
+		'errors'=>'page not created.<br/>expected:<br/>'
+			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
+	)));
+}
+// }
+// { save the page to set initial quiz somethingorothers
+$file=Curl_get('http://kvwebmerun/ww.admin/pages/form.php', array(
+	'id'=>2,
+	'parent'=>0,
+	'name'  =>'quiz',
+	'type'  =>'quiz|quiz',
+	'body[en]'=>'<h1>quiz</h1>testing quiz',
+	'action'=>'Update Page Details'
+));
+// }
+// }
+// { test frontend
+$file=Curl_get('http://kvwebmerun/quiz');
+$expected='quizzesFrontend';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
 // { cleanup
 // { remove plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsSetInstalled',
@@ -164,6 +202,12 @@ if (strpos($file, $expected)===false) {
 				'expected: '.$expected.'<br/>actual: '.$file
 		))
 	);
+}
+// }
+// { remove page
+$file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
+if ($file!='{"ok":1}') {
+	die('{"errors":"failed to delete page"}');
 }
 // }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');

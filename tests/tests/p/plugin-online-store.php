@@ -485,6 +485,20 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
+// { test vouchers
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=online-store&_page=vouchers'
+);
+$expected='Create a voucher';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
 // { clean up, to try using the wizard
 // { remove page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
