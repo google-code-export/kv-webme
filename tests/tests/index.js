@@ -12,6 +12,7 @@ $(function(){
 		['Page-type: Redirect', 'test-page-redirect'],
 		['Plugin Installation and Deinstallation', 'test-plugin-install-deinstall'],
 		['User Management', 'test-user-management'],
+		['plugin: Blog', 'plugin-blog'],
 		['plugin: Forms', 'test-forms'],
 		['plugin: Forum', 'test-forum'],
 		['plugin: Image Gallery', 'test-image-gallery'],
@@ -22,7 +23,8 @@ $(function(){
 		['plugin: Privacy', 'test-privacy'],
 		['plugin: Products', 'test-products'],
 		['plugin: Quiz', 'test-quiz'],
-		['plugin: Site Credits', 'test-site-credits']
+		['plugin: Site Credits', 'test-site-credits'],
+		['plugin: SMS', 'plugin-sms']
 	]; // }
 	var test3=[ // { tests that /must/ go at the end
 		['Check Code Formatting', 'check-code-formatting'],
