@@ -485,7 +485,22 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
+// { check that orders are displayed in the admin area
+$file=Curl_get(
+	'http://kvwebmerun/ww.admin/plugin.php?_plugin=online-store&_page=orders'
+);
+$expected='369.00';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
 // { test vouchers
+// { check that the admin page loads
 $file=Curl_get(
 	'http://kvwebmerun/ww.admin/plugin.php?_plugin=online-store&_page=vouchers'
 );
@@ -498,6 +513,19 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+// }
+// { try a voucher without any parameters to see if it loads in the frontend
+$file=Curl_get('http://kvwebmerun/a/p=online-store/f=checkVoucher');
+$expected='{"error":"Invalid or missing parameters"}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
 // }
 // { clean up, to try using the wizard
 // { remove page

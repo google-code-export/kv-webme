@@ -168,7 +168,7 @@ if (!$file || strpos($file, 'installation is complete')===false) {
 	die('{"errors":"could not load final page in wizard"}');
 }
 // }
-// { finally, check that maintenance page is active
+// { finally, check that installation is complete
 $file=Curl_get('http://kvwebmerun/Home');
 $file=Curl_get('http://kvwebmerun/ww.incs/upgrade.php');
 $file=Curl_get('http://kvwebmerun/ww.admin/');
@@ -176,6 +176,15 @@ $file=Curl_get('http://kvwebmerun/Home');
 if (!$file || strpos($file, 'This is your new website')===false) {
 	die('{"errors":"final step failed"}');
 }
+// }
+// { upload a test theme
+$file=Curl_get(
+	'http://kvwebmerun/install/theme-upload.php',
+	array(
+		'theme-zip'=>'@../../files/uncovered.zip',
+		'upload-theme'=>'Upload'
+	)
+);
 // }
 
 echo '{"ok":1}';
