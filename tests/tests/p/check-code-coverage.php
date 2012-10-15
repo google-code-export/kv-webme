@@ -77,7 +77,8 @@ function testCoverageDirectory($dir) {
 				'Smarty-3.1.12',
 				'recaptcha-php-1.11',
 				'ckeditor-3.6.2',
-				'ww.external'
+				'ww.external',
+				'mailing-list'
 			))) {
 				continue;
 			}

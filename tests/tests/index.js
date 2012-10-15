@@ -32,8 +32,9 @@ $(function(){
 		['Admin Login', 'test-admin-login']
 	]; // }
 	var test3=[ // { tests that /must/ go at the end
-		['Check Code Formatting', 'check-code-formatting'],
-		['Check Code Coverage', 'check-code-coverage']
+		['Check PHP Formatting', 'check-code-formatting'],
+		['Check Javascript Formatting', 'check-code-jshint'],
+		['Check Code Coverage', 'check-code-coverage'],
 	]; // }
 	var testAt=0, tests=[];
 	function runTest() {
