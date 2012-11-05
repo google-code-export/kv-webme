@@ -42,7 +42,7 @@ function checkJs($rootdir) {
 		$fileToCheck=$rootdir.'/'.$file->getFilename();
 		$opts='curly=true,quotmark=single,undef=true,unused=true,trailing=true'
 			.',maxdepth=4,maxstatements=40,maxcomplexity=10,browser=true,jquery=true'
-			.',maxerr=20';
+			.',maxerr=40';
 		$result=shell_exec("../../jshint/jshint-rhino.js $fileToCheck $opts");
 		$arr=array($fileToCheck, count(explode("\n", $result))/2);
 		if ($arr[1]==0) {

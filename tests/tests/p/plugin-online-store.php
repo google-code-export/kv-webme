@@ -228,12 +228,12 @@ if ($file!=$expected) {
 }
 // }
 // { add 3 of the product to cart
-$file=Curl_get('http://kvwebmerun/a/f=nothing', array(
+$file=Curl_get('http://kvwebmerun/a/p=online-store/f=addProductToCart', array(
 	'products_action'=>'add_to_cart',
 	'product_id'=>1,
 	'products-howmany'=>3
 ));
-$expected='[]';
+$expected='{"ok":1}';
 if ($file!=$expected) {
 	die(json_encode(array(
 		'errors'=>'product not added to cart.<br/>expected:<br/>'
