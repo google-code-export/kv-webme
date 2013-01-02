@@ -78,6 +78,7 @@ function testCoverageDirectory($dir) {
 				'recaptcha-php-1.11',
 				'ckeditor-3.6.2',
 				'ww.external',
+				'ww.tools',
 				'mailing-list'
 			))) {
 				continue;

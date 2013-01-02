@@ -56,7 +56,7 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled', array());
 $expected='{"backup":{"name":"Backup","description":"backup your website, o'
-	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
+	.'r replace with an old backup","version":0},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5}}';
 if ($expected!=$file) {
@@ -78,6 +78,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { try add a non-existing plugin using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=nosuchplug');
@@ -106,10 +107,10 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"backup":{"name":"Backup","description":"backup your website, o'
-	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
+	.'r replace with an old backup","version":0},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5},"products":{"name":"Products","description":"Product'
-	.' catalogue.","version":"45"}}';
+	.' catalogue.","version":"'.PLUGIN_PRODUCTS.'"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -145,7 +146,7 @@ if (strpos($file, $expected)===false) {
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"backup":{"name":"Backup","description":"backup your website, o'
-	.'r replace with an old backup","version":"0"},"panels":{"name":"Panels",'
+	.'r replace with an old backup","version":0},"panels":{"name":"Panels",'
 	.'"description":"Allows content sections to be displayed throughout the s'
 	.'ite.","version":5}}';
 if ($expected!=$file) {

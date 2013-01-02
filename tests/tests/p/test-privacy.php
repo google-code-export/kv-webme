@@ -35,13 +35,14 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5},"privacy'
 	.'":{"name":"User Authentication","description":"User authentication, pag'
-	.'e protection.","version":"0"}}';
+	.'e protection.","version":0}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(

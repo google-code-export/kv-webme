@@ -1,5 +1,6 @@
 <?php
 header('Content-type: application/json; charset=utf-8');
+define('PLUGIN_PRODUCTS', 46);
 function Curl_get($url, $post=array(), $output=false) {
 	$fname='/tmp/kvwebmecookie.txt';
 	$ch = curl_init($url);
@@ -18,12 +19,14 @@ function Curl_get($url, $post=array(), $output=false) {
 function Email_getMbox($user) {
 	$settings=$GLOBALS['emailSettings'][$user];
 	$mbox = imap_open(
-		'{'.$settings['server'].':143/imap/novalidate-cert}INBOX',
+		'{'.$settings['server'].':993/imap/ssl/novalidate-cert}INBOX',
 		$settings['username'],
 		$settings['password']
 	);
 	if ($mbox===false) {
-		die('failed to open mailbox');
+		die(
+			'failed to open mailbox '.print_r(imap_errors(), true)
+		);
 	}
 	return $mbox;
 }

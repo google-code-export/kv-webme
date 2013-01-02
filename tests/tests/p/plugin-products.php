@@ -35,12 +35,14 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
 $expected='{"panels":{"name":"Panels","description":"Allows content section'
 	.'s to be displayed throughout the site.","version":5},"products":{"name"'
-	.':"Products","description":"Product catalogue.","version":"45"}}';
+	.':"Products","description":"Product catalogue.","version":"'
+	.PLUGIN_PRODUCTS.'"}}';
 if ($expected!=$file) {
 	die(
 		json_encode(array(
@@ -196,6 +198,40 @@ if (strpos($file, 'Nobody has reviewed')===false) {
 	die('{"errors":"failed to add Products page"}');
 }
 // }
+// { widgets
+// { add tree widget to sidebar
+$file=Curl_get(
+	'http://kvwebmerun/a/p=panels/f=adminSave/id=1',
+	array(
+		'data'=>'{"widgets":[{"type":"products","name":"Products","widget_type":"Tr'
+		.'ee View","parent_cat":"0","show_products":"0","diameter":"280"}]}'
+	)
+);
+$expected='null';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
+}
+// }
+// { load the page to see that it worked
+$file=Curl_get('http://kvwebmerun/', array());
+if (strpos($file, '/products/default">default</a>')===false) {
+	die('{"errors":"failed to add Products widget"}');
+}
+// }
+// { remove widget from sidebar
+$file=Curl_get(
+	'http://kvwebmerun/a/p=panels/f=adminSave/id=1',
+	array(
+		'data'=>'{"widgets":[]}'
+	)
+);
+// }
+// }
 // { cleanup
 // { remove page
 $file=Curl_get('http://kvwebmerun/a/f=adminPageDelete/id=2');
@@ -234,6 +270,7 @@ if (strpos($file, $expected)===false) {
 }
 // }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
+Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=panels');
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products');
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types');
 // }

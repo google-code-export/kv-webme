@@ -35,6 +35,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
@@ -82,6 +83,19 @@ if (strpos($file, $expected)===false) {
 		'errors'=>'could not load forum admin page.<br/>expected:<br/>'
 			.htmlspecialchars($expected).'<br/>actual:<br/>'.$file
 	)));
+}
+// }
+// { try delete a non-existent message
+$file=Curl_get('http://kvwebmerun/a/p=forum/f=delete/id=1');
+$expected='{"error":"post does not exist"}';
+if (strpos($file, $expected)===false) {
+	die(
+		json_encode(array(
+			'errors'=>
+				'failed to delete non-existent message<br/>'
+				.'expected: '.$expected.'<br/>actual: '.$file
+		))
+	);
 }
 // }
 // { cleanup

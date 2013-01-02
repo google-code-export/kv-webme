@@ -37,6 +37,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');

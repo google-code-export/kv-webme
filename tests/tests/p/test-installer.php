@@ -177,6 +177,13 @@ if (!$file || strpos($file, 'This is your new website')===false) {
 	die('{"errors":"final step failed"}');
 }
 // }
+// { test that theme actually was loaded
+$file=file_get_contents('http://kvwebmerun/ww.skins/altruism/c/images/img02.gif');
+$md5=md5($file);
+if ($md5!='20ed57b97193f592d20ab2408af7ad58') {
+	die('{"errors":"failed to load theme image"}');
+}
+// }
 // { upload a test theme
 $file=Curl_get(
 	'http://kvwebmerun/install/theme-upload.php',

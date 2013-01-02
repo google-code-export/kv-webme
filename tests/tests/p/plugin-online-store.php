@@ -35,6 +35,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');
@@ -702,14 +703,7 @@ if (strpos($file, $expected)===false) {
 	);
 }
 // }
-// { remove widget from sidebar
-$file=Curl_get(
-	'http://kvwebmerun/ww.plugins/panels/admin/remove-panel.php?id=1',
-	array()
-);
-// }
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=pages');
-Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=panels');
 Curl_get('http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products');
 Curl_get(
 	'http://kvwebmerun/a/f=adminDBClearAutoincrement/table=products_types'

@@ -24,7 +24,7 @@ if ($expected!=$file) {
 	);
 }
 // }
-// { add plugin using InstallOne method (should fail)
+// { add plugin using InstallOne method
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsInstallOne/name=blog');
 $expected='{"ok":1,"added":["blog"],"removed":[]}';
 if (strpos($file, $expected)===false) {
@@ -35,6 +35,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { check current list of installed plugins
 $file=Curl_get('http://kvwebmerun/a/f=adminPluginsGetInstalled');

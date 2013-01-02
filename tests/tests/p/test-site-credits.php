@@ -35,6 +35,7 @@ if (strpos($file, $expected)===false) {
 		))
 	);
 }
+$file=Curl_get('http://kvwebmerun/a/f=nothing');
 // }
 // { so we add it by hand...
 $config=file_get_contents('../../run/trunk/.private/config.php');

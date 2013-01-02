@@ -5,8 +5,7 @@ $(function(){
 		['Installer', 'test-installer']
 	]; // }
 	var test2=[ // { put these in whatever order you want
-		['plugin: Online Store', 'plugin-online-store'],
-		['plugin: Mailinglists', 'plugin-mailinglists'],
+		['plugin: Meetings', 'plugin-meetings'],
 		['Convert FreeCssTemplates Theme', 'convert-freecsstemplate-theme'],
 		['Non-latin page names', 'test-page-non-latin'],
 		['Page Creation', 'test-page-creation'],
@@ -15,6 +14,7 @@ $(function(){
 		['Plugin Installation and Deinstallation', 'test-plugin-install-deinstall'],
 		['User Management', 'test-user-management'],
 		['plugin: Ads', 'plugin-ads'],
+		['plugin: Backup', 'plugin-backup'],
 		['plugin: Banner Image', 'plugin-banner-image'],
 		['plugin: Blog', 'plugin-blog'],
 		['plugin: Comments', 'plugin-comments'],
@@ -22,10 +22,14 @@ $(function(){
 		['plugin: Forum', 'test-forum'],
 		['plugin: Image Gallery', 'test-image-gallery'],
 		['plugin: Issue Tracker', 'test-issue-tracker'],
+		['plugin: Mailinglists', 'plugin-mailinglists'],
 		['plugin: Messaging Notifier', 'test-messaging-notifier'],
+		['plugin: Online Store', 'plugin-online-store'],
+		['plugin: Online Store - e-conomic', 'online-store-e-conomic'],
 		['plugin: Privacy', 'test-privacy'],
-		['plugin: Products', 'test-products'],
+		['plugin: Products', 'plugin-products'],
 		['plugin: Protected Files', 'plugin-protected-files'],
+		['plugin: Recommend This Site', 'plugin-recommend-this-site'],
 		['plugin: Quiz', 'plugin-quiz'],
 		['plugin: Site Credits', 'test-site-credits'],
 		['plugin: SMS', 'plugin-sms'],
@@ -34,7 +38,7 @@ $(function(){
 	var test3=[ // { tests that /must/ go at the end
 		['Check PHP Formatting', 'check-code-formatting'],
 		['Check Javascript Formatting', 'check-code-jshint'],
-		['Check Code Coverage', 'check-code-coverage'],
+		['Check Code Coverage', 'check-code-coverage']
 	]; // }
 	var testAt=0, tests=[];
 	function runTest() {
@@ -42,18 +46,21 @@ $(function(){
 		$.post('/p/'+tests[testAt][1]+'.php?rand='+Math.random(), function(ret) {
 			timerStop(ret);
 			testAt++;
+			var testsEndedAt=(new Date()).getTime();
+			console.log('tests took so far: '+(testsEndedAt-testsStartedAt));
 			if (testAt<tests.length && ret.ok) {
 				runTest();
 			}
 		}, 'json');
 	}
 
+	var testsStartedAt=(new Date()).getTime();
 	var starttime=0, timer=false;
 	function addRow(name) {
 		$('#current').removeAttr('id');
 		$('<tr id="current">'
 			+'<th>'+name+'</th><td class="time"></td>'
-			+'<td class="errors"></td><td class="notes"></td>'
+			+'<td class="notes"></td>'
 			+'</tr>'
 		)
 			.appendTo('#tests');
@@ -62,7 +69,7 @@ $(function(){
 	function startTests(ret) {
 		$('<table id="tests">'
 			+'<tr><th>Name</th><th>Time</th>'
-			+'<th>Errors</th><th>Notes</th></tr>'
+			+'<th>Notes</th></tr>'
 			+'</table>')
 			.appendTo($('body').empty());
 		for (var i=0;i<test1.length;++i) {
@@ -100,7 +107,7 @@ $(function(){
 		if (ret.errors) {
 			$('#current')
 				.addClass('has-errors')
-				.find('.errors')
+				.find('.notes')
 				.html(ret.errors);
 		}
 	}
